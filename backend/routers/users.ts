@@ -2,28 +2,33 @@ import {Router} from 'express';
 import mongoose from "mongoose";
 import {imageUpload} from "../multer";
 import {UserTypes} from "../types/users.types";
+import User from "../models/User";
 
 export const usersRouter = Router();
 
-usersRouter.post('/', imageUpload.single('avatar'), async (req, res) => {
+usersRouter.post('/', imageUpload.single('avatar'), async (req, res, next) => {
     try {
-        const {data} = req.body;
+        // const {data} = req.body;
         const userData: UserTypes = {
-            username: data.username,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            surName: data.surName,
-            email: data.email,
-            password: data.password,
+            username: req.body.username,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            surName: req.body.surName,
+            email: req.body.email,
+            password: req.body.password,
             avatar: req.file ? req.file.filename : null,
-            phoneNumber: data.phoneNumber,
+            phoneNumber: req.body.phoneNumber,
         };
 
+        const newUser = new User(userData);
+        newUser.generatedToken();
+        await newUser.save();
 
-
+        return res.send({message: 'Новый пользователь успешно создан!', user: newUser})
     } catch (e) {
         if (e instanceof mongoose.Error.ValidationError) {
             return res.status(422).send(e);
         }
+        next(e);
     }
 });

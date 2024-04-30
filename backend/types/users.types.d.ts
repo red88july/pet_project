@@ -1,3 +1,5 @@
+import {Model} from "mongoose";
+
 export interface UserTypes {
     username: string,
     firstName: string,
@@ -8,3 +10,15 @@ export interface UserTypes {
     avatar: string | null,
     phoneNumber: string,
 }
+
+export interface UserDataExtendsSchema extends UserTypes {
+    token: string;
+    role: string;
+}
+
+interface UserMethods {
+    checkPassword(password: string): Promise<Boolean>;
+    generatedToken();
+}
+
+type UserModel = Model<UserDataExtendsSchema, {}, UserMethods>

@@ -1,12 +1,29 @@
-import {model, Schema} from 'mongoose';
+import {HydratedDocument, model, Schema} from 'mongoose';
+import {randomUUID} from "crypto";
+import bcrypt from 'bcrypt';
+import {UserDataExtendsSchema, UserMethods, UserModel} from "../types/users.types";
 
-const UserSchema = new Schema({
+const SALT_WORK = 10;
+
+const UserSchema = new Schema<UserDataExtendsSchema, UserMethods, UserModel>({
     username: {
         type: String,
         required: true,
         unique: true,
-        autoIndex: true,
-        useCreateIndex: true,
+        validate: {
+            validator: async function (
+                this: HydratedDocument<UserDataExtendsSchema>,
+                username: string): Promise<boolean> {
+                if (!this.isModified('username')) return true;
+
+                const user: HydratedDocument<UserDataExtendsSchema> | null = await User.findOne({
+                    username: username,
+                });
+
+                return !user;
+            },
+            message: 'Пользователь с таким username уже зарегистрирован!'
+        }
     },
 
     firstName: {
@@ -25,8 +42,20 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-        autoIndex: true,
-        useCreateIndex: true,
+        validate: {
+            validator: async function (
+                this: HydratedDocument<UserDataExtendsSchema>,
+                email: string): Promise<boolean> {
+                if (!this.isModified('email')) return true;
+
+                const user: HydratedDocument<UserDataExtendsSchema> | null = await User.findOne({
+                    email: email,
+                });
+
+                return !user;
+            },
+            message: 'Пользователь с таким email уже зарегистрирован!'
+        }
     },
 
     password: {
@@ -42,8 +71,8 @@ const UserSchema = new Schema({
     role: {
         type: String,
         required: true,
-        enum: ['speaker', 'admin'],
-        default: 'guest'
+        enum: ['speaker', 'admin', 'guest'],
+        default: 'guest',
     },
 
     avatar: String,
@@ -52,7 +81,30 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     }
+}, {versionKey: false});
+
+
+UserSchema.methods.generatedToken = function () {
+    this.token = randomUUID();
+}
+
+UserSchema.methods.checkPassword = function (password: string) {
+    return bcrypt.compare(password, this.password);
+}
+
+UserSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) return next();
+    const salt = await bcrypt.genSalt(SALT_WORK);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
 });
 
-const User = model('User', UserSchema);
+UserSchema.set('toJSON', {
+    transform: (_doc, ret, _options) => {
+        delete ret.password;
+        return ret;
+    }
+})
+
+const User = model<UserDataExtendsSchema, UserModel>('User', UserSchema);
 export default User;
