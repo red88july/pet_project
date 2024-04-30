@@ -34,11 +34,34 @@ usersRouter.post('/', imageUpload.single('avatar'), async (req, res, next) => {
 
 usersRouter.get('/', async(req, res, next) => {
    try {
-       let query = req.query as object;
-       console.log(query);
-       const getUsers = await User.find(query);
-       return res.send({message: 'Список посетителей', users: getUsers})
+       let getQueryData = req.query as object;
+       const getUsers = await User.find(getQueryData);
+       return res.send({message: 'Данные успешно получены', users: getUsers})
    } catch (e) {
        next(e)
+   }
+});
+
+usersRouter.get('/:id', async(req, res, next) => {
+   try {
+       const findUserById = await User.findById({_id: req.params.id});
+       if (!findUserById) {
+           return res.status(404).send({message: 'Такого опользователя не существует'});
+       }
+       return res.send({message: `Пользователь найден!`, users: findUserById});
+   } catch (e) {
+       next(e)
+   }
+});
+
+usersRouter.delete('/:id', async(req, res, next) => {
+   try {
+       const deleteUserById = await User.findByIdAndDelete({_id: req.params.id});
+       if (!deleteUserById) {
+           return res.status(404).send({message: 'Такого пользователя не существует'});
+       }
+       return res.send({message: 'Пользователь успешно удален'});
+   } catch (e) {
+       next(e);
    }
 });
