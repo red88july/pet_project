@@ -1,5 +1,4 @@
 import {Model} from "mongoose";
-
 export interface UserTypes {
     username: string,
     firstName: string,

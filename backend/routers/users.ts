@@ -8,7 +8,6 @@ export const usersRouter = Router();
 
 usersRouter.post('/', imageUpload.single('avatar'), async (req, res, next) => {
     try {
-        // const {data} = req.body;
         const userData: UserTypes = {
             username: req.body.username,
             firstName: req.body.firstName,
@@ -31,4 +30,15 @@ usersRouter.post('/', imageUpload.single('avatar'), async (req, res, next) => {
         }
         next(e);
     }
+});
+
+usersRouter.get('/', async(req, res, next) => {
+   try {
+       let query = req.query as object;
+       console.log(query);
+       const getUsers = await User.find(query);
+       return res.send({message: 'Список посетителей', users: getUsers})
+   } catch (e) {
+       next(e)
+   }
 });

@@ -22,7 +22,7 @@ const UserSchema = new Schema<UserDataExtendsSchema, UserMethods, UserModel>({
 
                 return !user;
             },
-            message: 'Пользователь с таким username уже зарегистрирован!'
+            message: 'Пользователь с таким именем уже существует!'
         }
     },
 
@@ -54,7 +54,7 @@ const UserSchema = new Schema<UserDataExtendsSchema, UserMethods, UserModel>({
 
                 return !user;
             },
-            message: 'Пользователь с таким email уже зарегистрирован!'
+            message: 'Почтовый адрес уже зарегистирован!'
         }
     },
 
@@ -71,7 +71,7 @@ const UserSchema = new Schema<UserDataExtendsSchema, UserMethods, UserModel>({
     role: {
         type: String,
         required: true,
-        enum: ['speaker', 'admin', 'guest'],
+        enum: ['speaker', 'guest', 'admin'],
         default: 'guest',
     },
 
@@ -80,6 +80,21 @@ const UserSchema = new Schema<UserDataExtendsSchema, UserMethods, UserModel>({
     phoneNumber: {
         type: String,
         required: true,
+        unique: true,
+        validate: {
+            validator: async function (
+                this: HydratedDocument<UserDataExtendsSchema>,
+                phoneNumber: string): Promise<boolean> {
+                if (!this.isModified('phoneNumber')) return true;
+
+                const user: HydratedDocument<UserDataExtendsSchema> | null = await User.findOne({
+                    phoneNumber: phoneNumber,
+                });
+
+                return !user;
+            },
+            message: 'Номер использутеся другим пользователем!'
+        }
     }
 }, {versionKey: false});
 
