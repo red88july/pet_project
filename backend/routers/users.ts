@@ -8,15 +8,16 @@ export const usersRouter = Router();
 
 usersRouter.post('/', imageUpload.single('avatar'), async (req, res, next) => {
     try {
+        let data = req.body;
         const userData: UserTypes = {
-            username: req.body.username,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            surName: req.body.surName,
-            email: req.body.email,
-            password: req.body.password,
+            username: data.username,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            surName: data.surName,
+            email: data.email,
+            password: data.password,
             avatar: req.file ? req.file.filename : null,
-            phoneNumber: req.body.phoneNumber,
+            phoneNumber: data.phoneNumber,
         };
 
         const newUser = new User(userData);
@@ -76,7 +77,7 @@ usersRouter.put('/update/:id', imageUpload.single('avatar'), async (req, res, ne
     }
 });
 
-usersRouter.delete('/:id', async (req, res, next) => {
+usersRouter.delete('/:id',  async (req, res, next) => {
     try {
         const deleteUserById = await User.findByIdAndDelete({_id: req.params.id});
         if (!deleteUserById) {
