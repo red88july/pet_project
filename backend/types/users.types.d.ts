@@ -21,3 +21,5 @@ interface UserMethods {
 }
 
 type UserModel = Model<UserDataExtendsSchema, {}, UserMethods>
+
+export type UserUpdateType = Omit<UserDataExtendsSchema, 'token'>;

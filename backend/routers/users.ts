@@ -1,7 +1,7 @@
 import {Router} from 'express';
-import mongoose from "mongoose";
+import mongoose, {Types} from "mongoose";
 import {imageUpload} from "../multer";
-import {UserTypes} from "../types/users.types";
+import {UserTypes, UserUpdateType} from "../types/users.types";
 import User from "../models/User";
 
 export const usersRouter = Router();
@@ -32,36 +32,58 @@ usersRouter.post('/', imageUpload.single('avatar'), async (req, res, next) => {
     }
 });
 
-usersRouter.get('/', async(req, res, next) => {
-   try {
-       let getQueryData = req.query as object;
-       const getUsers = await User.find(getQueryData);
-       return res.send({message: 'Данные успешно получены', users: getUsers})
-   } catch (e) {
-       next(e)
-   }
+usersRouter.get('/', async (req, res, next) => {
+    try {
+        let getQueryData = req.query as object;
+        const getUsers = await User.find(getQueryData);
+        return res.send({message: 'Данные успешно получены', users: getUsers})
+    } catch (e) {
+        next(e)
+    }
 });
 
-usersRouter.get('/:id', async(req, res, next) => {
-   try {
-       const findUserById = await User.findById({_id: req.params.id});
-       if (!findUserById) {
-           return res.status(404).send({message: 'Такого опользователя не существует'});
-       }
-       return res.send({message: `Пользователь найден!`, users: findUserById});
-   } catch (e) {
-       next(e)
-   }
+usersRouter.get('/:id', async (req, res, next) => {
+    try {
+        const findUserById = await User.findById({_id: req.params.id});
+        if (!findUserById) {
+            return res.status(404).send({message: 'Такого опользователя не существует'});
+        }
+        return res.send({message: `Пользователь найден!`, users: findUserById});
+    } catch (e) {
+        next(e)
+    }
 });
 
-usersRouter.delete('/:id', async(req, res, next) => {
-   try {
-       const deleteUserById = await User.findByIdAndDelete({_id: req.params.id});
-       if (!deleteUserById) {
-           return res.status(404).send({message: 'Такого пользователя не существует'});
-       }
-       return res.send({message: 'Пользователь успешно удален'});
-   } catch (e) {
-       next(e);
-   }
+usersRouter.put('/update/:id', imageUpload.single('avatar'), async (req, res, next) => {
+    try {
+        let data = req.body;
+        const updateUserData: UserUpdateType = {
+            username: data.username,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            surName: req.body.surName,
+            email: req.body.email,
+            password: req.body.password,
+            avatar: req.file ? req.file.filename : null,
+            phoneNumber: req.body.phoneNumber,
+            role: req.body.role,
+        };
+
+        const updateUser = await User.findByIdAndUpdate({_id: req.params.id}, updateUserData, {new: true})
+        return res.send({message: 'Данные обновлены', user: updateUser});
+    } catch (e) {
+        next(e)
+    }
+});
+
+usersRouter.delete('/:id', async (req, res, next) => {
+    try {
+        const deleteUserById = await User.findByIdAndDelete({_id: req.params.id});
+        if (!deleteUserById) {
+            return res.status(404).send({message: 'Такого пользователя не существует'});
+        }
+        return res.send({message: 'Пользователь успешно удален'});
+    } catch (e) {
+        next(e);
+    }
 });
