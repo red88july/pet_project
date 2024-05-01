@@ -71,7 +71,7 @@ const UserSchema = new Schema<UserDataExtendsSchema, UserMethods, UserModel>({
     role: {
         type: String,
         required: true,
-        enum: ['speaker', 'guest', 'admin'],
+        enum: ['guest', 'speaker', 'manager', 'admin'],
         default: 'guest',
     },
 

@@ -1,8 +1,7 @@
-import {HydratedDocument, model, ObjectId, Schema, Types} from 'mongoose';
+import {model, Schema, Types} from 'mongoose';
 import User from "./User";
 
-
-const EventSchema = new Schema({
+const OccasionSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         required: true,
@@ -15,12 +14,28 @@ const EventSchema = new Schema({
             message: 'Такой пользователь не обнаружен!',
         }
     },
+
+    city: {
+      type: String,
+      required: true,
+    },
+
+    address: {
+        type: String,
+        required: true,
+    },
+
     title: {
         type: String,
         required: true,
     },
 
     date: {
+        type: String,
+        required: true,
+    },
+
+    time: {
         type: String,
         required: true,
     },
@@ -41,5 +56,5 @@ const EventSchema = new Schema({
     image: String,
 }, {versionKey: false});
 
-const Event = model('Event', EventSchema);
-export default Event;
+const Occasion = model('Occasion', OccasionSchema);
+export default Occasion;
