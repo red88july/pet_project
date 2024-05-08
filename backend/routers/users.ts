@@ -33,6 +33,29 @@ usersRouter.post('/', imageUpload.single('avatar'), async (req, res, next) => {
     }
 });
 
+usersRouter.post('/sessions', async (req, res ,next) => {
+    try {
+        const user = await User.findOne({email: req.body.email});
+
+        if (!user) {
+            return res.status(422).send({message: `Пользователя с таким e-mail не существует!`});
+        }
+
+        const checkPass = await user.checkPassword(req.body.password);
+
+        if (!checkPass) {
+            return res.status(422).send({message: `Неверный пароль!`});
+        }
+
+        user.generatedToken();
+        await user.save();
+
+        return res.send({ message: 'Email и пароль верны!', user });
+    } catch (e) {
+        next(e);
+    }
+});
+
 usersRouter.get('/', async (req, res, next) => {
     try {
         let getQueryData = req.query as object;

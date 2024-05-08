@@ -1,6 +1,5 @@
 import {Router} from 'express';
 import mongoose from "mongoose";
-import occasion from "../models/Occasion";
 import {imageUpload} from "../multer";
 import Occasion from "../models/Occasion";
 
