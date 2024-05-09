@@ -1,33 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Layout from "./components/Layout/Layout";
+import {Box, Container} from "@mui/material";
+import PageNoFoundPicture from '../src/assets/images/404PageNotFound.jpg';
+import {Route, Routes} from "react-router-dom";
+import {routes} from "./constants.routes.ts";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+     <Layout>
+         <Container maxWidth="xl">
+             <Routes>
+                 <Route path={routes.home} element={(<h1>Home page</h1>)}/>
+                 <Route path="*" element={(
+                     <Box
+                         sx={{
+                             display: 'flex', alignItems: 'center',
+                             justifyContent: 'center', marginTop: '50px'
+                         }}>
+                         <Box component="img"
+                              sx={{width: '50rem', height: '50rem'}}
+                              src={PageNoFoundPicture}
+                              alt="Page Not Found"/>
+                     </Box>
+                 )}/>
+             </Routes>
+         </Container>
+     </Layout>
     </>
   )
 }
