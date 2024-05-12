@@ -3,6 +3,8 @@ import {Box, Container} from "@mui/material";
 import PageNoFoundPicture from '../src/assets/images/404PageNotFound.jpg';
 import {Route, Routes} from "react-router-dom";
 import {routes} from "./constants.routes.ts";
+import RegisterForm from "./users/RegisterForm.tsx";
+import LoginForm from "./users/LoginForm.tsx";
 
 function App() {
   return (
@@ -11,6 +13,8 @@ function App() {
          <Container maxWidth="xl">
              <Routes>
                  <Route path={routes.home} element={(<h1>Home page</h1>)}/>
+                 <Route path={routes.register} element={<RegisterForm/>}/>
+                 <Route path={routes.login} element={<LoginForm/>}/>
                  <Route path="*" element={(
                      <Box
                          sx={{
@@ -30,4 +34,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

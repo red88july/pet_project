@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { HydratedDocument } from "mongoose";
 
 import User from "../models/User";
-import { UserDataExtendsSchema } from "../types";
+import { UserDataExtendsSchema } from "../types/users.types";
 
 export interface RequestUser extends Request {
     user?: HydratedDocument<UserDataExtendsSchema>
