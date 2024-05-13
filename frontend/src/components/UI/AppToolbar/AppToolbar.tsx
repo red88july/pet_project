@@ -2,9 +2,9 @@ import { NavLink } from 'react-router-dom';
 import { AppBar, Grid, styled, Toolbar, Typography } from '@mui/material';
 import {routes} from "../../../constants.routes.ts";
 import {useAppSelector} from "../../../app/hooks.ts";
-import {selectUserLog} from "../../../users/usersSlice.ts";
 import UserMenu from "./UserMenu.tsx";
 import GuestMenu from "./GuestMenu.tsx";
+import {selectUser} from "../../../users/usersSlice.ts";
 const Link = styled(NavLink)({
     color: 'inherit',
     textDecoration: 'none',
@@ -14,7 +14,7 @@ const Link = styled(NavLink)({
 });
 
 const AppToolbar = () => {
-    const user = useAppSelector(selectUserLog);
+    const user = useAppSelector(selectUser);
 
     if (user === undefined) {
         return null;

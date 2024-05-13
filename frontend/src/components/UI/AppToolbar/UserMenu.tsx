@@ -6,6 +6,7 @@ import {apiURL} from '../../../constants.ts';
 import {logout} from "../../../users/usersThunk.ts";
 import {useAppDispatch} from "../../../app/hooks.ts";
 import {User} from "../../../types/user.types";
+import {useNavigate} from "react-router-dom";
 
 interface Props {
   user: User;
@@ -13,6 +14,7 @@ interface Props {
 
 const UserMenu: React.FC<Props> = ({user}) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -25,6 +27,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
 
   const handleClickLogout = () => {
     dispatch(logout());
+    navigate('/');
   };
 
   return (
@@ -38,7 +41,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
         />
       </Box>
       <Button color="inherit" onClick={handleClick}>
-        Hello, {user.displayName}
+        Hello, {user.username}
       </Button>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose} keepMounted>
         <MenuItem onClick={handleClickLogout}>Logout</MenuItem>

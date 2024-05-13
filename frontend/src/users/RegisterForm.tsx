@@ -35,8 +35,6 @@ const RegisterForm = () => {
 
   const isRegistration = useSelector(loadingRegistration);
 
-
-
   const [register, setRegister] = useState<RegistrationMutation>({
     username: '',
     firstName: '',
@@ -210,23 +208,6 @@ const RegisterForm = () => {
                   onChange={phoneInput}
                   specialLabel="Введите номер телефона*"
               />
-
-              {/*<TextField*/}
-              {/*    // required*/}
-              {/*    fullWidth*/}
-              {/*    id="phoneNumber"*/}
-              {/*    type="phoneNumber"*/}
-              {/*    name="phoneNumber"*/}
-              {/*    value={register.phoneNumber}*/}
-              {/*    label="Введите номер телефона"*/}
-              {/*    onChange={inputChange}*/}
-              {/*    error={Boolean(getFieldError('phoneNumber'))}*/}
-              {/*    helperText={getFieldError('phoneNumber')}*/}
-              {/*    margin="normal"*/}
-              {/*    autoComplete="new-phoneNumber"*/}
-              {/*    autoFocus*/}
-              {/*/>*/}
-
               <TextField
                   // required
                   fullWidth
