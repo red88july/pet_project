@@ -53,5 +53,5 @@ export interface ValidationError {
 }
 
 export interface GlobalError {
-    error: string;
+    message: string;
 }

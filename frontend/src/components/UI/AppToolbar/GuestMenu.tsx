@@ -10,13 +10,13 @@ const GuestMenu = () => {
                 <IconButton color='inherit'>
                     <PersonAddIcon/>
                 </IconButton>
-                Sign Up
+                Регистрация
             </Button>
             <Button component={NavLink} to="/login" color="inherit">
                 <IconButton color='inherit'>
                     <LoginIcon/>
                 </IconButton>
-                Sign In
+                Войти
             </Button>
         </>
     );

@@ -3,21 +3,42 @@ import mongoose, {Types} from "mongoose";
 import {imageUpload} from "../multer";
 import {UserTypes, UserUpdateType} from "../types/users.types";
 import User from "../models/User";
+import BadWordsNext from "bad-words-next";
+
+let ru = require('bad-words-next/data/ru.json')
+let en = require('bad-words-next/data/en.json')
+
+const badWords = new BadWordsNext();
+badWords.add(ru);
+badWords.add(en);
 
 export const usersRouter = Router();
-
 usersRouter.post('/', imageUpload.single('avatar'), async (req, res, next) => {
     try {
-        let data = req.body;
+
+        if (req.body.password.length >= 1 && req.body.password.length < 8) {
+            return res.status(422).send({message: 'Пароль сликом короткий!'});
+        }
+
+        if (
+            badWords.check(req.body.username) ||
+            badWords.check(req.body.firstName) ||
+            badWords.check(req.body.lastName) ||
+            badWords.check(req.body.surName)
+        ) {
+            return res.status(422).send({ message: 'В ваших данных присутствует не нормативная лексика!' });
+        }
+
+
         const userData: UserTypes = {
-            username: data.username,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            surName: data.surName,
-            email: data.email,
-            password: data.password,
+            username: req.body.username,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            surName: req.body.surName,
+            email: req.body.email,
+            password: req.body.password,
             avatar: req.file ? req.file.filename : null,
-            phoneNumber: data.phoneNumber,
+            phoneNumber: req.body.phoneNumber,
         };
 
         const newUser = new User(userData);
@@ -33,7 +54,7 @@ usersRouter.post('/', imageUpload.single('avatar'), async (req, res, next) => {
     }
 });
 
-usersRouter.post('/sessions', async (req, res ,next) => {
+usersRouter.post('/sessions', async (req, res, next) => {
     try {
         const user = await User.findOne({email: req.body.email});
 
@@ -50,7 +71,7 @@ usersRouter.post('/sessions', async (req, res ,next) => {
         user.generatedToken();
         await user.save();
 
-        return res.send({ message: 'Email и пароль верны!', user });
+        return res.send({message: 'Email и пароль верны!', user});
     } catch (e) {
         next(e);
     }
@@ -100,7 +121,7 @@ usersRouter.put('/update/:id', imageUpload.single('avatar'), async (req, res, ne
     }
 });
 
-usersRouter.delete('/delete/:id',  async (req, res, next) => {
+usersRouter.delete('/delete/:id', async (req, res, next) => {
     try {
         const deleteUserById = await User.findByIdAndDelete({_id: req.params.id});
         if (!deleteUserById) {
@@ -112,13 +133,13 @@ usersRouter.delete('/delete/:id',  async (req, res, next) => {
     }
 });
 
-usersRouter.delete('/sessions', async (req, res ,next) => {
+usersRouter.delete('/sessions', async (req, res, next) => {
     try {
         const message = {message: 'Success!'};
 
         const headerValue = req.get('Authorization');
 
-        if(!headerValue) {
+        if (!headerValue) {
             return res.send(message);
         }
 
@@ -126,7 +147,7 @@ usersRouter.delete('/sessions', async (req, res ,next) => {
 
         const user = await User.findOne({token});
 
-        if(!user) {
+        if (!user) {
             return res.send(message);
         }
 

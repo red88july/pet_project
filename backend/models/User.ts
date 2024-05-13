@@ -2,6 +2,7 @@ import {HydratedDocument, model, Schema} from 'mongoose';
 import {randomUUID} from "crypto";
 import bcrypt from 'bcrypt';
 import {UserDataExtendsSchema, UserMethods, UserModel} from "../types/users.types";
+import { isEmail } from 'validator';
 
 const SALT_WORK = 10;
 

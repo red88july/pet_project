@@ -64,11 +64,11 @@ const LoginForm = () => {
           <LockOpenIcon/>
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign In
+          Авторизация
         </Typography>
         {error && (
           <Alert severity="error" sx={{mt: 3, width: '100%'}}>
-            {error.error || 'Username or password is not correct!'}
+            {error.message}
           </Alert>
         )}
         <Box component="form" onSubmit={submitFormHandler} sx={{mt: 1}}>
