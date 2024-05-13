@@ -2,7 +2,7 @@ import Layout from "./components/Layout/Layout";
 import {Box, Container} from "@mui/material";
 import PageNoFoundPicture from '../src/assets/images/404PageNotFound.jpg';
 import {Route, Routes} from "react-router-dom";
-import {routes} from "./constants.routes.ts";
+import {routes} from "./constants/constantsPage.routes.ts";
 import RegisterForm from "./users/RegisterForm.tsx";
 import LoginForm from "./users/LoginForm.tsx";
 

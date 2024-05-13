@@ -22,7 +22,7 @@ import {RegistrationMutation} from '../types/user.types';
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import FileInput from '../components/FileInput/FileInput';
-import {routes} from "../constants.routes.ts";
+import {routes} from "../constants/constantsPage.routes.ts";
 import PhoneInput from 'react-phone-input-2'
 
 import 'react-phone-input-2/lib/material.css'

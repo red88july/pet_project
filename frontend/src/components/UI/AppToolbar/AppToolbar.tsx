@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { AppBar, Grid, styled, Toolbar, Typography } from '@mui/material';
-import {routes} from "../../../constants.routes.ts";
+import {routes} from "../../../constants/constantsPage.routes.ts";
 import {useAppSelector} from "../../../app/hooks.ts";
 import UserMenu from "./UserMenu.tsx";
 import GuestMenu from "./GuestMenu.tsx";

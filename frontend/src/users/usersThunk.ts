@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
 import {isAxiosError} from 'axios';
-import axiosApi from '../axiosApi.ts';
+import axiosApi from '../constants/axiosApi.ts';
 
 import {
   GlobalError,
@@ -12,7 +12,7 @@ import {
   ValidationError
 } from '../types/user.types';
 import {unsetUser} from './usersSlice.ts';
-import {serverRoutes} from "../server.routes.ts";
+import {serverRoutes} from "../constants/constantsServer.routes.ts";
 
 export const registration = createAsyncThunk<RegistrationResponse, RegistrationMutation, {
   rejectValue: ValidationError
@@ -31,7 +31,7 @@ export const registration = createAsyncThunk<RegistrationResponse, RegistrationM
         }
       });
 
-      const response = await axiosApi.post('/users', formData);
+      const response = await axiosApi.post(serverRoutes.registration, formData);
       return response.data;
     } catch (e) {
       if (isAxiosError(e) && e.response && e.response.status === 422) {
@@ -46,7 +46,7 @@ export const login = createAsyncThunk<LoginResponse, LoginMutation, { rejectValu
   'users/login',
   async (loginMutation, {rejectWithValue}) => {
     try {
-      const response = await axiosApi.post('/users/sessions', loginMutation);
+      const response = await axiosApi.post(serverRoutes.login, loginMutation);
       return response.data;
     } catch (e) {
       if (isAxiosError(e) && e.response && e.response.status === 422) {
