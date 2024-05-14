@@ -37,7 +37,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
           component="img"
           sx={{width: 50, height: 50, borderRadius: '10px', border: '3px solid black'}}
           image={user.avatar ? apiURL + '/' + user.avatar : noAvatar}
-          alt={user.displayName}
+          alt={user.username}
         />
       </Box>
       <Button color="inherit" onClick={handleClick}>

@@ -4,7 +4,6 @@ export interface User {
     firstName: string;
     lastName: string;
     surName: string;
-    displayName: string;
     phoneNumber: string;
     email: string;
     password: string;
@@ -19,7 +18,6 @@ export interface RegistrationMutation {
     lastName: string;
     surName: string;
     phoneNumber: string;
-    displayName: string;
     email: string;
     password: string;
     avatar: File | null;

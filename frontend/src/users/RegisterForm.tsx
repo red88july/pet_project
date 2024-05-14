@@ -1,21 +1,10 @@
 import React, {useState} from 'react';
-import {
-    Avatar,
-    Box,
-    Button,
-    Container,
-    CssBaseline,
-    Grid,
-    TextField,
-    Typography,
-    Link,
-    CircularProgress, Alert
-} from '@mui/material';
+import { Avatar, Box, Button, Container, CssBaseline, Grid, TextField, Typography, Link,  CircularProgress, Alert } from '@mui/material';
 
 import {useSelector} from 'react-redux';
 import {registration} from './usersThunk.ts';
 import {errorRegistration, loadingRegistration} from './usersSlice.ts';
-import {useAppDispatch, useAppSelector} from '../../src/app/hooks.ts';
+import {useAppDispatch, useAppSelector} from '../app/hooks.ts';
 
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {RegistrationMutation} from '../types/user.types';
@@ -23,21 +12,26 @@ import {RegistrationMutation} from '../types/user.types';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import FileInput from '../components/FileInput/FileInput';
 import {routes} from "../constants/constantsPage.routes.ts";
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/material.css';
+
+import {MuiTelInput} from 'mui-tel-input'
+import {badWords} from "../utils/badword.library.ts";
 
 const RegisterForm = () => {
-
+    
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    // const error = useSelector(errorRegistration);
 
     const isRegistration = useSelector(loadingRegistration);
-
     const error = useAppSelector(errorRegistration);
 
-    // const [labelPass, setLabelPass] = useState('Длина пароля не меньше 8 симовлов');
-    // const [labelValid, setLabelValid] = useState<boolean | undefined>(undefined);
+    const [passLabel, setPassLabel] = useState<string>('Не используйте короткие пароли!');
+    const [isValidPass, setValidPass] = useState<boolean | undefined>(undefined);
+
+    const [userNameLabel, setUserNameLabel] = useState<string>('Введите имя которое будет отображатся при входе на сайт');
+    const [nickNameValid, setNameValid] = useState<boolean | undefined>(undefined);
+
+    const [phoneLabel, setPhoneLabel] = useState<string>('Выберите телефонный код вашей страны и введите номер');
+    const [isValidPhone, setValidPhone] = useState<boolean | undefined>(undefined)
 
     const [register, setRegister] = useState<RegistrationMutation>({
         username: '',
@@ -45,11 +39,11 @@ const RegisterForm = () => {
         lastName: '',
         surName: '',
         phoneNumber: '',
-        displayName: '',
         email: '',
         password: '',
         avatar: null,
     });
+
 
     const getFieldError = (fieldName: string) => {
         try {
@@ -81,7 +75,23 @@ const RegisterForm = () => {
     const submitForm = async (event: React.FormEvent) => {
         event.preventDefault();
         try {
+            if (register.password.length >= 1 && register.password.length < 8) {
+                setPassLabel('Пароль слишком короткий');
+                setValidPass(false);
+                return;
+            }
 
+            if (badWords.check(register.username)) {
+                setUserNameLabel('В ваших данных присутствует не нормативная лексика!');
+                setNameValid(false);
+                return;
+            }
+
+            if (register.phoneNumber.length > 18) {
+                setPhoneLabel('Слишком большой номер!')
+                setValidPhone(false)
+                return;
+            }
             await dispatch(registration(register)).unwrap();
             navigate('/');
         } catch (e) {
@@ -152,7 +162,6 @@ const RegisterForm = () => {
                                     helperText={getFieldError('lastName')}
                                     margin="normal"
                                     autoComplete="new-lastName"
-                                    autoFocus
                                 />
                             </Grid>
                             <Grid item xs={4}>
@@ -163,12 +172,8 @@ const RegisterForm = () => {
                                     value={register.surName}
                                     label="Отчество"
                                     onChange={inputChange}
-                                    error={Boolean(getFieldError('surName'))}
-                                    helperText={getFieldError('surName')}
                                     margin="normal"
-                                    autoComplete="new-surName"
-                                    autoFocus
-                                />
+                                    autoComplete="new-surName"/>
                             </Grid>
                         </Grid>
                         <TextField
@@ -184,21 +189,6 @@ const RegisterForm = () => {
                             helperText={getFieldError('email')}
                             margin="normal"
                             autoComplete="new-email"
-                            autoFocus
-                        />
-                        <TextField
-                            required
-                            fullWidth
-                            id="password"
-                            type="password"
-                            name="password"
-                            value={register.password}
-                            label="Введите пароль"
-                            onChange={inputChange}
-                            error={Boolean(getFieldError('password'))}
-                            helperText={getFieldError('password')}
-                            margin="normal"
-                            autoComplete="new-password"
                         />
                         <TextField
                             required
@@ -209,29 +199,38 @@ const RegisterForm = () => {
                             value={register.username}
                             label="Введите ваш никнейм"
                             onChange={inputChange}
-                            error={Boolean(getFieldError('username'))}
-                            helperText={getFieldError('username')}
+                            error={Boolean(getFieldError('username') || nickNameValid === false)}
+                            helperText={getFieldError('username') ? getFieldError('username') : userNameLabel}
                             margin="normal"
                             autoComplete="new-username"
-                            autoFocus
                         />
-                        <PhoneInput
-                            country="kg"
-                            masks={{
-                                kg: '(...) ..-..-..',
-                                ru: '(...) ...-..-..',
-                                uz: '(...) ...-..-..',
-                                kz: '(...) ..-....',
-                                by: '(...) ...-..-..',
-                                tj: '(....) .-..-..'
-                            }}
-                            inputStyle={{
-                                width: '100%',
-                            }}
-                            onlyCountries={['kg', 'ru', 'uz', 'kz', 'by', 'tj']}
+                        <TextField
+                            required
+                            fullWidth
+                            id="password"
+                            type="password"
+                            name="password"
+                            value={register.password}
+                            label="Введите пароль"
+                            onChange={inputChange}
+                            error={Boolean(getFieldError('password') || isValidPass === false)}
+                            helperText={getFieldError('password') ? getFieldError('password') : passLabel}
+                            margin="normal"
+                            autoComplete="new-password"
+                        />
+                        <MuiTelInput
+                            required
+                            fullWidth
+                            defaultCountry="KG"
+                            id="phoneNumber"
+                            name="phoneNumber"
                             value={register.phoneNumber}
                             onChange={phoneInput}
-                            specialLabel="Введите номер телефона*"
+                            error={Boolean(getFieldError('phoneNumber') || isValidPhone === false)}
+                            helperText={getFieldError('phoneNumber') ? getFieldError('phoneNumber') : phoneLabel}
+                            margin="normal"
+                            autoComplete="new-phoneNumber"
+                            label="Введите номер телефона"
                         />
                         <Grid item xs marginTop={1}>
                             <FileInput

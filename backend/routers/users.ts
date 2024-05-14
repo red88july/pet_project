@@ -3,33 +3,10 @@ import mongoose, {Types} from "mongoose";
 import {imageUpload} from "../multer";
 import {UserTypes, UserUpdateType} from "../types/users.types";
 import User from "../models/User";
-import BadWordsNext from "bad-words-next";
-
-let ru = require('bad-words-next/data/ru.json')
-let en = require('bad-words-next/data/en.json')
-
-const badWords = new BadWordsNext();
-badWords.add(ru);
-badWords.add(en);
 
 export const usersRouter = Router();
 usersRouter.post('/', imageUpload.single('avatar'), async (req, res, next) => {
     try {
-
-        if (req.body.password.length >= 1 && req.body.password.length < 8) {
-            return res.status(422).send({message: 'Пароль сликом короткий!'});
-        }
-
-        if (
-            badWords.check(req.body.username) ||
-            badWords.check(req.body.firstName) ||
-            badWords.check(req.body.lastName) ||
-            badWords.check(req.body.surName)
-        ) {
-            return res.status(422).send({ message: 'В ваших данных присутствует не нормативная лексика!' });
-        }
-
-
         const userData: UserTypes = {
             username: req.body.username,
             firstName: req.body.firstName,
