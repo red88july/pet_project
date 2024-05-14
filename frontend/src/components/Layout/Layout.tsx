@@ -1,5 +1,6 @@
 import {PropsWithChildren} from 'react';
 import AppToolbar from '../UI/AppToolbar/AppToolbar';
+import Footer from "../UI/Footer/Footer.tsx";
 
 const Layout: React.FC<PropsWithChildren> = ({children}) => {
 
@@ -12,7 +13,7 @@ const Layout: React.FC<PropsWithChildren> = ({children}) => {
                 {children}
             </main>
             <footer>
-                <h1>Footer</h1>
+              <Footer />
             </footer>
         </>
     );

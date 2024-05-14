@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Avatar, Box, Button, Container, CssBaseline, Grid, TextField, Typography, Link,  CircularProgress, Alert } from '@mui/material';
+import { Avatar, Box, Button, Container, CssBaseline, Grid, TextField, Typography, Link,  CircularProgress } from '@mui/material';
 
 import {useSelector} from 'react-redux';
 import {registration} from './usersThunk.ts';
@@ -43,7 +43,6 @@ const RegisterForm = () => {
         password: '',
         avatar: null,
     });
-
 
     const getFieldError = (fieldName: string) => {
         try {
@@ -114,23 +113,16 @@ const RegisterForm = () => {
                 <CssBaseline/>
                 <Box
                     sx={{
-                        marginTop: 12,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                    }}
-                >
+                    }}>
                     <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
                         <LockOutlinedIcon/>
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Регистрация
                     </Typography>
-                    {error && (
-                        <Alert severity="error" sx={{mt: 3, width: '100%'}}>
-                            {error.message}
-                        </Alert>
-                    )}
                     <Box component="form" onSubmit={submitForm} sx={{mt: 1}}>
                         <Grid container spacing={1}>
                             <Grid item xs={4}>
@@ -258,7 +250,6 @@ const RegisterForm = () => {
                     </Box>
                 </Box>
             </Container>
-
         </>
     );
 };
