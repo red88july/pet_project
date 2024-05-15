@@ -10,7 +10,7 @@ export const Footer = () => {
                 backgroundColor: '#0d47a1',
                 paddingTop: "1rem",
                 paddingBottom: "1rem",
-                marginTop: "230px",
+                // marginTop: "230px",
             }}
         >
             <Container maxWidth="lg">
@@ -62,7 +62,7 @@ export const Footer = () => {
                     </Box>
                 </Box>
             </Container>
-        </Box>
+        // </Box>
     );
 };
 

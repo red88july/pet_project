@@ -1,8 +1,7 @@
 import {PropsWithChildren} from 'react';
 import AppToolbar from '../UI/AppToolbar/AppToolbar';
 import Footer from "../UI/Footer/Footer.tsx";
-import {Box} from "@mui/material";
-import footer from "../UI/Footer/Footer.tsx";
+import {Container} from "@mui/material";
 
 const Layout: React.FC<PropsWithChildren> = ({children}) => {
 
@@ -12,11 +11,16 @@ const Layout: React.FC<PropsWithChildren> = ({children}) => {
                 <AppToolbar/>
             </header>
             <main>
+                <Container
+                    maxWidth="lg"
+                    component="main"
+                    sx={{ minHeight: '100vh', pt: 4, mb: 4 }}>
                 {children}
+                </Container>
             </main>
-            <Box component={footer}>
-                <Footer />
-            </Box>
+            <footer>
+              <Footer />
+            </footer>
         </>
     );
 };

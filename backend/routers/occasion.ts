@@ -2,6 +2,7 @@ import {Router} from 'express';
 import mongoose from "mongoose";
 import {imageUpload} from "../multer";
 import Occasion from "../models/Occasion";
+import {OccasionMutation, OccasionTypes} from "../types/occasion.types";
 
 export const occasionRouter = Router();
 
@@ -13,18 +14,18 @@ occasionRouter.post('/', imageUpload.single('image'), async (req, res, next) => 
             return res.status(422).send({message: 'Цена превышает максимальное число символов'});
         }
 
-        const occasionData = {
-            user: data.user,
-            city: data.city,
-            address: data.address,
-            title: data.title,
-            date: data.date,
-            time: data.time,
-            price: data.price,
-            description: data.description,
-            restrictions: data.restrictions,
-            duration: data.duration,
-            category: data.category,
+        const occasionData: OccasionTypes = {
+            user: req.body.user,
+            city: req.body.city,
+            address: req.body.address,
+            title: req.body.title,
+            date: req.body.date,
+            time: req.body.time,
+            price: req.body.price,
+            description: req.body.description,
+            restrictions: req.body.restrictions,
+            duration: req.body.duration,
+            category: req.body.category,
             image: req.file ? req.file.filename : null,
         }
 
@@ -41,5 +42,58 @@ occasionRouter.post('/', imageUpload.single('image'), async (req, res, next) => 
 });
 
 occasionRouter.get('/', async (req, res, next) => {
+    try {
+        let queryOccasionData = req.query as object;
+        const getOccasion = await Occasion.find(queryOccasionData);
+        return res.send({message: 'Список всех мероприятий', occasion: getOccasion});
+    } catch (e) {
+        next(e);
+    }
+});
 
+occasionRouter.get('/:id', async (req, res, next) => {
+    try {
+        const getByIdOccasion = await Occasion.findById({_id: req.params.id});
+
+        if (!getByIdOccasion) {
+            return res.status(404).send({message: 'Такого мероприятия не существует!'});
+        }
+
+        return res.send({message: `Мероприятие найдено`, occasion: getByIdOccasion});
+    } catch (e) {
+        next(e);
+    }
+});
+
+occasionRouter.patch('/update/:id', imageUpload.single('image'), async (req, res, next) => {
+    try {
+        const occasionData: OccasionMutation = {
+            city: req.body.city,
+            address: req.body.address,
+            date: req.body.date,
+            time: req.body.time,
+            description: req.body.description,
+            category: req.body.category,
+            image: req.file ? req.file.filename : null,
+        }
+
+        const findOccasionAndUpdate = await Occasion.findByIdAndUpdate({_id: req.params.id}, occasionData, {new: true});
+        return res.send({message: `Мероприятие обновлено`, occasion: findOccasionAndUpdate});
+    } catch (e) {
+        next(e);
+    }
+});
+
+occasionRouter.delete('/delete/:id', async (req, res, next) => {
+    try {
+        const getByIdOccasion = await Occasion.findByIdAndDelete({_id: req.params.id});
+
+        if (!getByIdOccasion) {
+            return res.status(404).send({message: 'Такого мероприятия не существует!'});
+        }
+
+        return res.send({message: `Мероприятие успешно удалено`});
+    } catch (e) {
+        next(e);
+    }
 });

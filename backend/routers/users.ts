@@ -7,6 +7,17 @@ import User from "../models/User";
 export const usersRouter = Router();
 usersRouter.post('/', imageUpload.single('avatar'), async (req, res, next) => {
     try {
+
+        if (
+            req.body.username === '' ||
+            req.body.firstName === '' ||
+            req.body.lastName === '' ||
+            req.body.email === '' ||
+            req.body.password === '' ||
+            req.body.phoneNumber === '') {
+            return res.status(422).send({message: 'Поля не могут быть пустыми!'});
+        }
+
         const userData: UserTypes = {
             username: req.body.username,
             firstName: req.body.firstName,
@@ -78,11 +89,10 @@ usersRouter.get('/:id', async (req, res, next) => {
 
 usersRouter.put('/update/:id', imageUpload.single('avatar'), async (req, res, next) => {
     try {
-        let data = req.body;
         const updateUserData: UserUpdateType = {
-            username: data.username,
-            firstName: data.firstName,
-            lastName: data.lastName,
+            username: req.body.username,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
             surName: req.body.surName,
             email: req.body.email,
             password: req.body.password,
