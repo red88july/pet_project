@@ -5,6 +5,7 @@ import {Route, Routes} from "react-router-dom";
 import {routes} from "./constants/constantsPage.routes.ts";
 import RegisterForm from "./features/users/RegisterForm.tsx";
 import LoginForm from "./features/users/LoginForm.tsx";
+import Occasion from "./features/occasion/Occasion.tsx";
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
      <Layout>
          <Container maxWidth="xl">
              <Routes>
-                 <Route path={routes.home} element={(<h1>Home page</h1>)}/>
+                 <Route path={routes.home} element={(<Occasion />)}/>
                  <Route path={routes.register} element={<RegisterForm/>}/>
                  <Route path={routes.login} element={<LoginForm/>}/>
                  <Route path="*" element={(

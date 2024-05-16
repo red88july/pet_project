@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
 import {isAxiosError} from 'axios';
-import axiosApi from '../../constants/axiosApi.ts';
+import axiosApi from '../../utils/axiosApi.ts';
 
 import {
   GlobalError,

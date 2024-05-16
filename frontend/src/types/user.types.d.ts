@@ -53,3 +53,13 @@ export interface ValidationError {
 export interface GlobalError {
     message: string;
 }
+
+export interface UserMutation {
+    id: string;
+    firstName: string;
+    lastName: string;
+    surName: string;
+    email: string;
+    role: string;
+    phoneNumber: string;
+}
