@@ -3,7 +3,7 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE} from 'redux-persist';
 
 import storage from 'redux-persist/lib/storage';
-import {usersReducer} from "../users/usersSlice.ts";
+import {usersReducer} from "../features/users/usersSlice.ts";
 
 
 const usersPersistConfig = {

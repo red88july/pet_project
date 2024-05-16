@@ -3,6 +3,9 @@ import mongoose from "mongoose";
 import {imageUpload} from "../multer";
 import Occasion from "../models/Occasion";
 import {OccasionMutation, OccasionTypes} from "../types/occasion.types";
+import findUser from "../middleware/findUser";
+import permit from "../middleware/permit";
+import auth, {RequestUser} from "../middleware/auth";
 
 export const occasionRouter = Router();
 
@@ -41,7 +44,7 @@ occasionRouter.post('/', imageUpload.single('image'), async (req, res, next) => 
     }
 });
 
-occasionRouter.get('/', async (req, res, next) => {
+occasionRouter.get('/', findUser, async (req: RequestUser, res, next) => {
     try {
         let queryOccasionData = req.query as object;
         const getOccasion = await Occasion.find(queryOccasionData);
@@ -65,7 +68,7 @@ occasionRouter.get('/:id', async (req, res, next) => {
     }
 });
 
-occasionRouter.patch('/update/:id', imageUpload.single('image'), async (req, res, next) => {
+occasionRouter.patch('/update/:id', auth, permit('speaker', 'manager', 'admin'), imageUpload.single('image'), async (req, res, next) => {
     try {
         const occasionData: OccasionMutation = {
             city: req.body.city,
@@ -84,7 +87,7 @@ occasionRouter.patch('/update/:id', imageUpload.single('image'), async (req, res
     }
 });
 
-occasionRouter.delete('/delete/:id', async (req, res, next) => {
+occasionRouter.delete('/delete/:id', auth, permit('manager', 'admin'), async (req, res, next) => {
     try {
         const getByIdOccasion = await Occasion.findByIdAndDelete({_id: req.params.id});
 

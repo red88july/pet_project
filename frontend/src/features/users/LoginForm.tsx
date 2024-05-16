@@ -15,10 +15,10 @@ import {
 } from '@mui/material';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 
-import {useAppDispatch, useAppSelector} from '../app/hooks.ts';
-import {login} from './usersThunk';
-import {selectLoginError, selectLoginLoading} from './usersSlice';
-import {LoginMutation} from '../types/user.types';
+import {useAppDispatch, useAppSelector} from '../../app/hooks.ts';
+import {login} from './usersThunk.ts';
+import {selectLoginError, selectLoginLoading} from './usersSlice.ts';
+import {LoginMutation} from '../../types/user.types';
 import {useSelector} from 'react-redux';
 
 

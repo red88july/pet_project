@@ -3,7 +3,7 @@ import {Box, Button, CardMedia, Menu, MenuItem} from '@mui/material';
 
 import noAvatar from '../../../assets/images/ic-noavatar.png';
 import {apiURL} from '../../../constants/constants.url.ts';
-import {logout} from "../../../users/usersThunk.ts";
+import {logout} from "../../../features/users/usersThunk.ts";
 import {useAppDispatch} from "../../../app/hooks.ts";
 import {User} from "../../../types/user.types";
 import {useNavigate} from "react-router-dom";

@@ -4,17 +4,17 @@ import { Avatar, Box, Button, Container, CssBaseline, Grid, TextField, Typograph
 import {useSelector} from 'react-redux';
 import {registration} from './usersThunk.ts';
 import {errorRegistration, loadingRegistration} from './usersSlice.ts';
-import {useAppDispatch, useAppSelector} from '../app/hooks.ts';
+import {useAppDispatch, useAppSelector} from '../../app/hooks.ts';
 
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
-import {RegistrationMutation} from '../types/user.types';
+import {RegistrationMutation} from '../../types/user.types';
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import FileInput from '../components/FileInput/FileInput';
-import {routes} from "../constants/constantsPage.routes.ts";
+import FileInput from '../../components/FileInput/FileInput.tsx';
+import {routes} from "../../constants/constantsPage.routes.ts";
 
 import {MuiTelInput} from 'mui-tel-input'
-import {badWords} from "../utils/badword.library.ts";
+import {badWords} from "../../utils/badword.library.ts";
 
 const RegisterForm = () => {
     

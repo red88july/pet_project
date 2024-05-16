@@ -4,7 +4,7 @@ import {routes} from "../../../constants/constantsPage.routes.ts";
 import {useAppSelector} from "../../../app/hooks.ts";
 import UserMenu from "./UserMenu.tsx";
 import GuestMenu from "./GuestMenu.tsx";
-import {selectUser} from "../../../users/usersSlice.ts";
+import {selectUser} from "../../../features/users/usersSlice.ts";
 
 import logo from '../../../assets/images/ic-plannerLogo.png';
 

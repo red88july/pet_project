@@ -1,5 +1,3 @@
-import {types} from "node:util";
-
 export interface OccasionTypes {
     user: string;
     title: string;

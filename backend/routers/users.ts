@@ -3,6 +3,9 @@ import mongoose, {Types} from "mongoose";
 import {imageUpload} from "../multer";
 import {UserTypes, UserUpdateType} from "../types/users.types";
 import User from "../models/User";
+import findUser from "../middleware/findUser";
+import auth, {RequestUser} from "../middleware/auth";
+import permit from "../middleware/permit";
 
 export const usersRouter = Router();
 usersRouter.post('/', imageUpload.single('avatar'), async (req, res, next) => {
@@ -65,7 +68,7 @@ usersRouter.post('/sessions', async (req, res, next) => {
     }
 });
 
-usersRouter.get('/', async (req, res, next) => {
+usersRouter.get('/', findUser, async (req: RequestUser, res, next) => {
     try {
         let getQueryData = req.query as object;
         const getUsers = await User.find(getQueryData);
@@ -79,7 +82,7 @@ usersRouter.get('/:id', async (req, res, next) => {
     try {
         const findUserById = await User.findById({_id: req.params.id});
         if (!findUserById) {
-            return res.status(404).send({message: 'Такого опользователя не существует'});
+            return res.status(404).send({message: 'Такого пользователя не существует'});
         }
         return res.send({message: `Пользователь найден!`, users: findUserById});
     } catch (e) {
@@ -87,7 +90,7 @@ usersRouter.get('/:id', async (req, res, next) => {
     }
 });
 
-usersRouter.put('/update/:id', imageUpload.single('avatar'), async (req, res, next) => {
+usersRouter.put('/update/:id', auth, imageUpload.single('avatar'), async (req, res, next) => {
     try {
         const updateUserData: UserUpdateType = {
             username: req.body.username,
@@ -108,7 +111,7 @@ usersRouter.put('/update/:id', imageUpload.single('avatar'), async (req, res, ne
     }
 });
 
-usersRouter.delete('/delete/:id', async (req, res, next) => {
+usersRouter.delete('/delete/:id', auth, permit('admin'), async (req, res, next) => {
     try {
         const deleteUserById = await User.findByIdAndDelete({_id: req.params.id});
         if (!deleteUserById) {
