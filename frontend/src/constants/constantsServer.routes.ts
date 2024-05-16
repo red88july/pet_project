@@ -3,4 +3,5 @@ export const serverRoutes = {
     login: '/users/sessions',
     logout: '/users/sessions',
     occasion: '/occasion',
+    occasionDelete: '/occasion/delete',
 }

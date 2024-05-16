@@ -1,8 +1,15 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Button, Card, CardContent, CardMedia, Dialog, Typography} from "@mui/material";
 import imageNotAvailable from '../../../assets/images/image_not_available.png';
 import {apiURL} from "../../../utils/constants.url.ts";
-
+import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
+import {selectUser} from "../../users/usersSlice.ts";
+import CancelIcon from '@mui/icons-material/Cancel';
+import {LoadingButton} from "@mui/lab";
+import {isDeleteOccasion,
+    // selectOccasion
+} from "../occasionSlice.ts";
+import {deleteOccasion, getOccasion} from "../occasionThunk.ts";
 
 interface Props {
     id: string;
@@ -18,11 +25,18 @@ interface Props {
     image: string | null;
 }
 
-const OccasionList: React.FC<Props> = ({
-                                           id, city, address, title, location,
-                                           date, time, price, restrictions, duration, image
+const OccasionList: React.FC<Props> = ({id, city, address, title, location,
+                                        date, time, price, restrictions, duration, image
                                        }) => {
+    const getUser = useAppSelector(selectUser);
+    const isDelete = useAppSelector(isDeleteOccasion);
+    const dispatch = useAppDispatch();
+
     const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        dispatch(getOccasion())
+    }, [dispatch]);
 
     let coverImage = imageNotAvailable;
 
@@ -38,11 +52,28 @@ const OccasionList: React.FC<Props> = ({
         setOpen(false);
     };
 
+    const nandleDelete = async () => {
+        await dispatch(deleteOccasion(id))
+        await dispatch(getOccasion());
+    };
+
     return (
         <>
             <Card id={id} sx={{maxWidth: 350}}>
                 <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                     <CardContent>
+                        <Box sx={{display: 'flex', justifyContent: 'flex-end', marginBottom: '5px', padding: '5px'}}>
+                            {(getUser && getUser?.role === 'admin' || getUser && getUser?.role === 'manager') && (
+                                <LoadingButton
+                                    disabled={isDelete}
+                                    loading={isDelete}
+                                    onClick={nandleDelete}
+                                    sx={{ minWidth: '29px', padding: '3px', borderRadius: '50%' }}
+                                    color="error">
+                                    <CancelIcon />
+                                </LoadingButton>
+                            )}
+                        </Box>
                         <CardMedia
                             onClick={handleOpen}
                             component="img"
@@ -62,7 +93,6 @@ const OccasionList: React.FC<Props> = ({
                                 Close
                             </Button>
                         </Dialog>
-
                         <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                             <Typography gutterBottom variant="h6">
                                 {title}

@@ -45,7 +45,7 @@ occasionRouter.post('/', imageUpload.single('image'), async (req, res, next) => 
     }
 });
 
-occasionRouter.get('/', findUser, async (req: RequestUser, res, next) => {
+occasionRouter.get('/',async (req, res, next) => {
     try {
         let queryOccasionData = req.query as object;
         const getOccasion = await Occasion.find(queryOccasionData)
@@ -90,7 +90,7 @@ occasionRouter.patch('/update/:id', auth, permit('speaker', 'manager', 'admin'),
     }
 });
 
-occasionRouter.delete('/delete/:id', auth, permit('manager', 'admin'), async (req, res, next) => {
+occasionRouter.delete('/delete/:id', auth, permit('manager', 'admin'), async (req: RequestUser, res, next) => {
     try {
         const getByIdOccasion = await Occasion.findByIdAndDelete({_id: req.params.id});
 

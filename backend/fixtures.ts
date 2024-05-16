@@ -317,8 +317,6 @@ const run = async () => {
             image: 'fixtures/cover/mizaki.jpg',
         },
     ])
-
-
     await db.close();
 };
 
