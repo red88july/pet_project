@@ -6,6 +6,7 @@ export interface Occasion {
     user: UserMutation;
     city: string;
     address: string;
+    location: string;
     title: string;
     date: string;
     time: string;

@@ -5,6 +5,7 @@ export interface OccasionTypes {
     time: string;
     city: string;
     address: string;
+    location: string;
     price: number;
     description: string;
     restrictions: number;

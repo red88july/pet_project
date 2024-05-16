@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app/hooks.ts';
 
-import {Alert, Box, CircularProgress, Grid} from '@mui/material';
+import {Alert, Box, CircularProgress} from '@mui/material';
 
 import {isErrorToLoadOccasion, isLoadingOccasion, selectOccasion} from "./occasionSlice.ts";
 import {getOccasion} from "./occasionThunk.ts";
@@ -19,31 +19,27 @@ const Occasion: React.FC = () => {
 
     return (
         <>
-            <Grid container marginTop={5}>
-                <Grid item container marginTop={7} gap={1}>
-                    {loading && <Box sx={{display: 'flex', justifyContent: 'center'}}>
-                        <CircularProgress size={100}/></Box>}
-                    {error && (<Alert severity="warning">Упс! Что-то пошло не так!</Alert>)}
-                    {occasion.map(occasion => (
-                        <OccasionList
-                            key={occasion._id}
-                            id={occasion._id}
-                            user={occasion.user}
-                            city={occasion.city}
-                            address={occasion.address}
-                            title={occasion.title}
-                            date={occasion.date}
-                            time={occasion.time}
-                            price={occasion.price}
-                            description={occasion.description}
-                            restrictions={occasion.restrictions}
-                            duration={occasion.duration}
-                            category={occasion.category}
-                            image={occasion.image}
-                        />
-                    ))}
-                </Grid>
-            </Grid>
+            {loading && <Box sx={{display: 'flex', justifyContent: 'center'}}>
+                <CircularProgress size={100}/></Box>}
+            {error && (<Alert severity="error">Упс! Что-то пошло не так!</Alert>)}
+            <Box sx={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', gap: '10px'}}>
+                {occasion.map(item => (
+                    <OccasionList
+                        key={item._id}
+                        id={item._id}
+                        city={item.city}
+                        address={item.address}
+                        location={item.location}
+                        title={item.title}
+                        date={item.date}
+                        time={item.time}
+                        price={item.price}
+                        restrictions={item.restrictions}
+                        duration={item.duration}
+                        image={item.image}
+                    />
+                ))}
+            </Box>
         </>
     );
 };

@@ -21,6 +21,7 @@ occasionRouter.post('/', imageUpload.single('image'), async (req, res, next) => 
             user: req.body.user,
             city: req.body.city,
             address: req.body.address,
+            location: req.body.location,
             title: req.body.title,
             date: req.body.date,
             time: req.body.time,
@@ -50,7 +51,7 @@ occasionRouter.get('/', findUser, async (req: RequestUser, res, next) => {
         const getOccasion = await Occasion.find(queryOccasionData)
             .populate({path: 'user', select: 'firstName lastName surName role email phoneNumber'})
             .populate({path: 'category', select: 'name'});
-        return res.send({message: 'Список всех мероприятий', occasion: getOccasion});
+        return res.send(getOccasion);
     } catch (e) {
         next(e);
     }

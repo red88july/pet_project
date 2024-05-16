@@ -26,6 +26,11 @@ const OccasionSchema = new Schema({
         required: true,
     },
 
+    location: {
+        type: String,
+        required: true,
+    },
+
     title: {
         type: String,
         required: true,
