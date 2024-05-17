@@ -44,12 +44,10 @@ export const getOccasion = createAsyncThunk<Occasion []>(
     }
 );
 
-export const deleteOccasion = createAsyncThunk<void, string, { state: RootState }>(
+export const deleteOccasion = createAsyncThunk<void, string>(
     'occasion/deleteOccasion',
-    async (id, {getState}) => {
-        const token = getState().users.users?.token;
-        const response = await axiosApi.delete(`${serverRoutes.occasionDelete}/${id}`,
-            {headers: {'Authorization': 'Bearer ' + token}});
+    async (id) => {
+        const response = await axiosApi.delete(`${serverRoutes.occasionDelete}/${id}`);
         return response.data;
     },
 );

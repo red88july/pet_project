@@ -60,7 +60,6 @@ const OccasionSchema = new Schema({
     category: {
         type: String,
         required: true,
-        unique: true,
     },
 
     image: String,
