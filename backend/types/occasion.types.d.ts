@@ -14,4 +14,4 @@ export interface OccasionTypes {
     image: string | null;
 }
 
-export type OccasionMutation = Omit<OccasionTypes, 'user', 'title', 'price', 'restrictions', 'duration'>;
+export type OccasionMutation = Omit<OccasionTypes, 'user', 'title', 'price', 'restrictions', 'duration', 'image'>;

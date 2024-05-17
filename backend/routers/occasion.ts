@@ -65,7 +65,7 @@ occasionRouter.get('/:id', async (req, res, next) => {
     }
 });
 
-occasionRouter.patch('/update/:id', auth, permit('speaker', 'manager', 'admin'), imageUpload.single('image'), async (req, res, next) => {
+occasionRouter.patch('/update/:id', auth, permit('speaker', 'manager', 'admin'), async (req, res, next) => {
     try {
         const occasionData: OccasionMutation = {
             city: req.body.city,
@@ -74,11 +74,10 @@ occasionRouter.patch('/update/:id', auth, permit('speaker', 'manager', 'admin'),
             time: req.body.time,
             description: req.body.description,
             category: req.body.category,
-            image: req.file ? req.file.filename : null,
         }
 
         const findOccasionAndUpdate = await Occasion.findByIdAndUpdate({_id: req.params.id}, occasionData, {new: true});
-        return res.send({message: `Мероприятие обновлено`, occasion: findOccasionAndUpdate});
+        return res.send(findOccasionAndUpdate);
     } catch (e) {
         next(e);
     }

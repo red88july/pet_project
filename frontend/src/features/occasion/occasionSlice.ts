@@ -11,7 +11,8 @@ interface OccasionState {
     occasion: Occasion [];
     isLoadOccasion: boolean;
     isErrorLoadOccasion: boolean;
-    isDelete: boolean,
+    isDelete: boolean;
+    isEditing: boolean;
 }
 
 const initialState: OccasionState = {
@@ -22,6 +23,7 @@ const initialState: OccasionState = {
     isLoadOccasion: false,
     isErrorLoadOccasion: false,
     isDelete: false,
+    isEditing: false,
 };
 
 export const occasionSlice = createSlice({

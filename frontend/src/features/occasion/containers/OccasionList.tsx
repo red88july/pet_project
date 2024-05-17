@@ -25,12 +25,11 @@ interface Props {
     image: string | null;
 }
 
-const OccasionList: React.FC<Props> = ({id, city, address, title, location,
-                                        date, time, price, restrictions, duration, image
+const OccasionList: React.FC<Props> = ({
+                                           id, city, address, title, location,
+                                           date, time, price, restrictions, duration, image
                                        }) => {
     const getUser = useAppSelector(selectUser);
-
-
     const isDelete = useAppSelector(isDeleteOccasion);
     const dispatch = useAppDispatch();
 
@@ -64,20 +63,21 @@ const OccasionList: React.FC<Props> = ({id, city, address, title, location,
             <Card id={id} sx={{maxWidth: 350}}>
                 <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                     <CardContent>
-                       <Box sx={{display: 'flex', justifyContent: 'end'}}>
-                           <Box sx={{display: 'flex', justifyContent: 'flex-end', marginBottom: '5px', padding: '5px'}}>
-                               {(getUser && getUser?.role === 'admin' || getUser && getUser?.role === 'manager') && (
-                                   <LoadingButton
-                                       disabled={isDelete}
-                                       loading={isDelete}
-                                       onClick={nandleDelete}
-                                       sx={{ minWidth: '29px', padding: '3px', borderRadius: '50%' }}
-                                       color="error">
-                                       <CancelIcon />
-                                   </LoadingButton>
-                               )}
-                           </Box>
-                       </Box>
+                        <Box sx={{display: 'flex', justifyContent: 'end'}}>
+                            <Box
+                                sx={{display: 'flex', justifyContent: 'flex-end', marginBottom: '5px', padding: '5px'}}>
+                                {(getUser && getUser?.role === 'admin' || getUser && getUser?.role === 'manager') && (
+                                    <LoadingButton
+                                        disabled={isDelete}
+                                        loading={isDelete}
+                                        onClick={nandleDelete}
+                                        sx={{minWidth: '29px', padding: '3px', borderRadius: '50%'}}
+                                        color="error">
+                                        <CancelIcon/>
+                                    </LoadingButton>
+                                )}
+                            </Box>
+                        </Box>
                         <CardMedia
                             onClick={handleOpen}
                             component="img"

@@ -114,8 +114,6 @@ const OccasionForm = () => {
     const submitForm = async (event: React.FormEvent) => {
         event.preventDefault();
         try {
-
-
             await dispatch(occasionCreate(occasion)).unwrap();
             navigate('/');
         } catch (e) {
@@ -335,7 +333,7 @@ const OccasionForm = () => {
                             variant="contained"
                             sx={{mt: 3, mb: 2}}
                             disabled={loading}>
-                            {loading ? (<CircularProgress />) : 'Добавить мероприятие'}
+                            {loading ? (<CircularProgress/>) : 'Добавить мероприятие'}
                         </Button>
                     </Box>
                 </Box>
