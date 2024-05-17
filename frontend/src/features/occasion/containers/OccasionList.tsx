@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, Card, CardContent, CardMedia, Dialog, Typography} from "@mui/material";
+import {Box, Button, Card, CardContent, CardMedia, Dialog, Link, Typography} from "@mui/material";
 
 import {apiURL} from "../../../utils/constants.url.ts";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
@@ -9,7 +9,9 @@ import {deleteOccasion, getOccasion} from "../occasionThunk.ts";
 
 import imageNotAvailable from '../../../assets/images/image_not_available.png';
 import CancelIcon from '@mui/icons-material/Cancel';
+import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import {LoadingButton} from "@mui/lab";
+import {Link as RouterLink} from "react-router-dom";
 
 interface Props {
     id: string;
@@ -64,6 +66,13 @@ const OccasionList: React.FC<Props> = ({
                 <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                     <CardContent>
                         <Box sx={{display: 'flex', justifyContent: 'end'}}>
+                            {(getUser && getUser?.role === 'admin' || getUser && getUser?.role === 'manager') && (
+                            <Box>
+                                <Link component={RouterLink} to={`occasion/update/${id}`} variant="body2">
+                                    <SystemUpdateAltIcon />
+                                </Link>
+                            </Box>
+                            )}
                             <Box
                                 sx={{display: 'flex', justifyContent: 'flex-end', marginBottom: '5px', padding: '5px'}}>
                                 {(getUser && getUser?.role === 'admin' || getUser && getUser?.role === 'manager') && (

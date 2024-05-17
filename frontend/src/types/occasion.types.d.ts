@@ -33,3 +33,13 @@ export interface OccasionMutation {
     category: string,
     image: File | null,
 }
+
+export interface EditRequestOccasion {
+    id: string | undefined;
+    address: string | undefined;
+    city: string | undefined;
+    date: string | undefined;
+    time: string | undefined;
+    description: string | undefined;
+    // category: string | undefined;
+}

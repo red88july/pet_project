@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../utils/axiosApi.ts';
 import {serverRoutes} from "../../constants/constantsServer.routes.ts";
-import {Occasion, OccasionMutation} from "../../types/occasion.types";
+import {EditRequestOccasion, Occasion, OccasionMutation} from "../../types/occasion.types";
 import {RootState} from "../../app/store.ts";
 import {ValidationError} from "../../types/user.types";
 import {isAxiosError} from "axios";
@@ -35,6 +35,16 @@ export const occasionCreate = createAsyncThunk<Occasion, OccasionMutation, {
         }
     }
 );
+
+export const updateOccasion = createAsyncThunk<void, EditRequestOccasion
+>('occasion/updateOccasion', async (id) => {
+    try {
+        const response = await axiosApi.patch('occasion/update/'+ id.id)
+        return response.data;
+    } catch (e) {
+        console.log('Попытка обновить данные', e);
+    }
+});
 
 export const getOccasion = createAsyncThunk<Occasion []>(
     'occasion/getOccasion',

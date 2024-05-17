@@ -10,6 +10,7 @@ import OccasionForm from "./features/occasion/components/OccasionForm.tsx";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.tsx";
 import {useAppSelector} from "./app/hooks.ts";
 import {selectUser} from "./features/users/usersSlice.ts";
+import UpdateForm from "./features/occasion/components/UpdateForm.tsx";
 
 function App() {
     const user = useAppSelector(selectUser);
@@ -24,6 +25,11 @@ function App() {
                         <Route path={routes.occasionForm} element={
                             <ProtectedRoute isAllowed={user && (user.role === 'speaker' || user.role === 'manager' || user.role === 'admin')}>
                                 <OccasionForm/>
+                            </ProtectedRoute>
+                        }/>
+                        <Route path='occasion/update/:id' element={
+                            <ProtectedRoute isAllowed={user && (user.role === 'speaker' || user.role === 'manager' || user.role === 'admin')}>
+                                <UpdateForm />
                             </ProtectedRoute>
                         }/>
                         <Route path="*" element={(
