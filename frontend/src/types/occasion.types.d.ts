@@ -17,3 +17,19 @@ export interface Occasion {
     category: CategoryMutation;
     image: null | string;
 }
+
+export interface OccasionMutation {
+    user: string | undefined;
+    city: string;
+    address: string;
+    location: string;
+    title: string;
+    date: string;
+    time: string;
+    price: string;
+    description: string;
+    restrictions: string,
+    duration: string,
+    category: string,
+    image: File | null,
+}

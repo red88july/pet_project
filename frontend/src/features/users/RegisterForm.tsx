@@ -17,7 +17,6 @@ import {MuiTelInput} from 'mui-tel-input'
 import {badWords} from "../../utils/badword.library.ts";
 
 const RegisterForm = () => {
-    
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 

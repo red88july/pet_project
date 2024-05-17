@@ -3,8 +3,6 @@ import connectToDB from "./connectToDB";
 import User from "./models/User";
 import {randomUUID} from "crypto";
 import Occasion from "./models/Occasion";
-import Category from "./models/Category";
-import occasion from "./models/Occasion";
 
 const dropCollection = async (db: mongoose.Connection, collectionsName: string) => {
     try {
@@ -93,22 +91,6 @@ const run = async () => {
         },
     ]);
 
-    const category = await Category.create([
-        {
-            name: 'Спектакли',
-        }, {
-            name: 'Концерты',
-        }, {
-            name: 'Мода',
-        }, {
-            name: 'Бизнес',
-        }, {
-            name: 'Семинары',
-        }, {
-            name: 'Искусство',
-        },
-    ]);
-
     await Occasion.create([
         {
             user: users[0]._id,
@@ -124,7 +106,7 @@ const run = async () => {
                           КАНАТ НАДЫРБЕК. Премьер балета КНАТОБ. Заслуженный артист КР. `,
             duration: '2 часа 45 минут',
             restrictions: 7,
-            category: category[0]._id,
+            category: 'Спектакли',
             image: 'fixtures/cover/lake.jpg',
         }, {
             user: users[0]._id,
@@ -141,7 +123,7 @@ const run = async () => {
                           культурой, где аниме-музыка возведена в ранг высокого искусства.`,
             duration: '1 час 30 минут',
             restrictions: 7,
-            category: category[1]._id,
+            category: 'Спектакли',
             image: 'fixtures/cover/kenchi.jpg',
         }, {
             user: users[1]._id,
@@ -158,7 +140,7 @@ const run = async () => {
                           где мода становится выразительным инструментом размышлений о будущем.`,
             duration: '1 час 20 минут',
             restrictions: 18,
-            category: category[2]._id,
+            category: 'Мода',
             image: 'fixtures/cover/fashionShow.jpg',
         }, {
             user: users[1]._id,
@@ -174,7 +156,7 @@ const run = async () => {
                           но и занимающих в компаниях самые высокие позиции.`,
             duration: '10 часов',
             restrictions: 18,
-            category: category[3]._id,
+            category: 'Бизнес',
             image: 'fixtures/cover/forum.jpg',
         }, {
             user: users[2]._id,
@@ -192,7 +174,7 @@ const run = async () => {
                 ' 22% опрашиваемых — ниже среднего, а 10% утверждают, что адаптация в компании находилась на очень низком уровне.',
             duration: '2 часа',
             restrictions: 18,
-            category: category[4]._id,
+            category: 'Семинары',
             image: 'fixtures/cover/adaptationEmployee.jpg',
         }, {
             user: users[2]._id,
@@ -209,7 +191,7 @@ const run = async () => {
                 'Здесь незаменимы будут грамотная, хорошо поставленная речь и умение убеждать.',
             duration: '2 часа',
             restrictions: 18,
-            category: category[4]._id,
+            category: 'Семинары',
             image: 'fixtures/cover/orator.jpg',
         }, {
             user: users[3]._id,
@@ -227,7 +209,7 @@ const run = async () => {
              мастер-классы по рисованию в технике скетчинга хороши не только отдельно, но и как развлечение 
              на корпоративах, семейных праздниках, молодежных вечеринках.`,
             duration: '1,5 часа',
-            category: category[5]._id,
+            category: 'Искусство',
             image: 'fixtures/cover/sketch.jpg',
         }, {
             user: users[3]._id,
@@ -243,7 +225,7 @@ const run = async () => {
             Получается эффектная черно-белая композиция. Если как базовый слой использовать вместо воска или парафина масляную пастель, можно получить цветные узоры.`,
             duration: '1,5 часа',
             restrictions: 8,
-            category: category[5]._id,
+            category: 'Искусство',
             image: 'fixtures/cover/grattaj.jpg',
         }, {
             user: users[4]._id,
@@ -261,7 +243,7 @@ const run = async () => {
              Снимать стресс «не полезными» средствами или обучиться системе управления эмоциональными состояниями.`,
             duration: '1 часа',
             restrictions: 18,
-            category: category[4]._id,
+            category: 'Семинары',
             image: 'fixtures/cover/stress.jpg',
         }, {
             user: users[4]._id,
@@ -278,7 +260,7 @@ const run = async () => {
               стиль одежды, предпочитаемые цвета, манера поведения в группе людей и другие «мелочи» выдают о нём многое.`,
             duration: '2 часа',
             restrictions: 18,
-            category: category[3]._id,
+            category: 'Бизнес',
             image: 'fixtures/cover/personalMenegment.jpg',
         }, {
             user: users[5]._id,
@@ -295,7 +277,7 @@ const run = async () => {
                           и шквал драйва.`,
             duration: '2 часа',
             restrictions: 18,
-            category: category[1]._id,
+            category: 'Концерты',
             image: 'fixtures/cover/lumen.jpg',
         }, {
             user: users[5]._id,
@@ -313,7 +295,7 @@ const run = async () => {
              находящейся на стыке реальности и сновидений.`,
             duration: '2 часа',
             restrictions: 5,
-            category: category[1]._id,
+            category: 'Концерты',
             image: 'fixtures/cover/mizaki.jpg',
         },
     ])

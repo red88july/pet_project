@@ -1,6 +1,6 @@
-import {model, Schema, Types} from 'mongoose';
+import {HydratedDocument, model, Schema, Types} from 'mongoose';
 import User from "./User";
-import Category from "./Category";
+import {UserDataExtendsSchema} from "../types/users.types";
 
 const OccasionSchema = new Schema({
     user: {
@@ -17,8 +17,8 @@ const OccasionSchema = new Schema({
     },
 
     city: {
-      type: String,
-      required: true,
+        type: String,
+        required: true,
     },
 
     address: {
@@ -58,16 +58,9 @@ const OccasionSchema = new Schema({
     duration: String,
 
     category: {
-        type: Schema.Types.ObjectId,
+        type: String,
         required: true,
-        ref: 'Category',
-        validate: {
-            validator: async (value: Types.ObjectId) => {
-                const category = await Category.findById(value);
-                return Boolean(category);
-            },
-            message: 'Такой категории не существует!',
-        }
+        unique: true,
     },
 
     image: String,

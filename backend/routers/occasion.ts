@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import {imageUpload} from "../multer";
 import Occasion from "../models/Occasion";
 import {OccasionMutation, OccasionTypes} from "../types/occasion.types";
-import findUser from "../middleware/findUser";
+
 import permit from "../middleware/permit";
 import auth, {RequestUser} from "../middleware/auth";
 
@@ -11,12 +11,6 @@ export const occasionRouter = Router();
 
 occasionRouter.post('/', imageUpload.single('image'), async (req, res, next) => {
     try {
-        let data = req.body;
-
-        if (data.price.length > 5) {
-            return res.status(422).send({message: 'Цена превышает максимальное число символов'});
-        }
-
         const occasionData: OccasionTypes = {
             user: req.body.user,
             city: req.body.city,

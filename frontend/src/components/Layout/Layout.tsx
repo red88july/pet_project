@@ -1,9 +1,14 @@
-import {PropsWithChildren} from 'react';
+import React, {PropsWithChildren} from 'react';
 import AppToolbar from '../UI/AppToolbar/AppToolbar';
 import Footer from "../UI/Footer/Footer.tsx";
-import {Container} from "@mui/material";
+import {Box, Container} from "@mui/material";
+import {useAppSelector} from "../../app/hooks.ts";
+import {selectUser} from "../../features/users/usersSlice.ts";
+import FormBar from "../FormBar/FormBar.tsx";
 
 const Layout: React.FC<PropsWithChildren> = ({children}) => {
+
+    const user = useAppSelector(selectUser);
 
     return (
         <>
@@ -14,12 +19,13 @@ const Layout: React.FC<PropsWithChildren> = ({children}) => {
                 <Container
                     maxWidth="lg"
                     component="main"
-                    sx={{ minHeight: '100vh', pt: 4, mb: 4 }}>
-                {children}
+                    sx={{minHeight: '100vh', mb: 4}}>
+                    <Box>{user && (<FormBar/>)}</Box>
+                    {children}
                 </Container>
             </main>
             <footer>
-              <Footer />
+                <Footer/>
             </footer>
         </>
     );

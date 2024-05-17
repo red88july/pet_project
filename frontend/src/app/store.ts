@@ -6,7 +6,6 @@ import storage from 'redux-persist/lib/storage';
 import {usersReducer} from "../features/users/usersSlice.ts";
 import {occasionReducer} from "../features/occasion/occasionSlice.ts";
 
-
 const usersPersistConfig = {
     key: 'planner:users',
     storage: storage,
