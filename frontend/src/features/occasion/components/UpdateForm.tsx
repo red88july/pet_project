@@ -1,22 +1,33 @@
 import React, {useState} from 'react';
-import { Box, Button, CardMedia, Container, CssBaseline, Grid, TextField, Typography} from '@mui/material';
+import {
+    Box,
+    Button,
+    CardMedia,
+    CircularProgress,
+    Container,
+    CssBaseline,
+    Grid,
+    TextField,
+    Typography
+} from '@mui/material';
 
 import {useAppDispatch, useAppSelector} from '../../../app/hooks.ts';
 import {Link as RouterLink, useNavigate, useParams} from 'react-router-dom';
-import {isErrorLoadingOccasions, isLoadingOccasion, selectOccasion} from "../occasionSlice.ts";
+import {isErrorLoadingOccasions, isUpdateOccasion, selectOccasion} from "../occasionSlice.ts";
 import {checkForBadWords} from "../../../utils/BadWordCheck.ts";
 import {updateOccasion} from "../occasionThunk.ts";
 import {UpdateStateOccasion} from "../../../types/occasion.types";
 import {routes} from "../../../constants/constantsPage.routes.ts";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import picturePlanner from '../../../../src/assets/images/ic-planner.png';
+import picturePlanner from '../../../assets/images/icons/ic-planner.png';
+import { fieldAddress,  fieldCategory, fieldCity, fieldDate, fieldDescription, fieldHall, fieldTime } from "../../../style.ts";
 
 const UpdateForm = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const error = useAppSelector(isErrorLoadingOccasions);
-    const loading = useAppSelector(isLoadingOccasion);
+    const update = useAppSelector(isUpdateOccasion);
     const {id} = useParams();
     const occasions = useAppSelector(selectOccasion);
 
@@ -25,7 +36,7 @@ const UpdateForm = () => {
         city: occasion?.city,
         address: occasion?.address,
         date: occasion?.date,
-        time: occasion?.time,
+        time: occasion?.time.toString(),
         description: occasion?.description,
         category: occasion?.category,
         location: occasion?.location,
@@ -90,7 +101,7 @@ const UpdateForm = () => {
         event.preventDefault();
         try {
             await dispatch(updateOccasion({id, occasionMutation: state})).unwrap();
-            navigate('/');
+            navigate(routes.home);
         } catch (e) {
             //error
         }
@@ -100,11 +111,11 @@ const UpdateForm = () => {
         <>
             <Container maxWidth="md">
                 <CssBaseline/>
-                    <Button startIcon={<ArrowBackIcon/>} component={RouterLink} to={routes.home} >
-                        <Typography style={{textAlign: 'center'}} variant="body2">
-                            Вернутся назад
-                        </Typography>
-                    </Button>
+                <Button startIcon={<ArrowBackIcon/>} component={RouterLink} to={routes.home}>
+                    <Typography style={{textAlign: 'center'}} variant="body2">
+                        Вернутся назад
+                    </Typography>
+                </Button>
                 <Box
                     sx={{
                         display: 'flex',
@@ -126,6 +137,8 @@ const UpdateForm = () => {
                             <Grid item xs={4}>
                                 <TextField
                                     required
+                                    sx={fieldCity}
+                                    inputProps={{style: {paddingLeft: "3rem"}}}
                                     id="city"
                                     type="city"
                                     name="city"
@@ -142,6 +155,8 @@ const UpdateForm = () => {
                             <Grid item xs={4}>
                                 <TextField
                                     required
+                                    sx={fieldAddress}
+                                    inputProps={{style: {paddingLeft: "3rem"}}}
                                     id="address"
                                     type="address"
                                     name="address"
@@ -158,6 +173,8 @@ const UpdateForm = () => {
                                 <TextField
                                     required
                                     fullWidth
+                                    sx={fieldCategory}
+                                    inputProps={{style: {paddingLeft: "3rem"}}}
                                     id="category"
                                     type="category"
                                     name="category"
@@ -172,7 +189,10 @@ const UpdateForm = () => {
                             </Grid>
                         </Grid>
                         <TextField
+                            required
                             fullWidth
+                            sx={fieldHall}
+                            inputProps={{style: {paddingLeft: "3rem"}}}
                             id="location"
                             type="location"
                             name="location"
@@ -187,11 +207,14 @@ const UpdateForm = () => {
                         <TextField
                             required
                             fullWidth
+                            sx={fieldDate}
+                            inputProps={{style: {paddingLeft: "3rem"}}}
                             id="date"
-                            type="date"
                             name="date"
+                            type="text"
                             value={state.date}
                             label="Дата проведения"
+                            placeholder="ДД.ММ.ГГ"
                             onChange={inputChange}
                             error={Boolean(getFieldError('date'))}
                             helperText={getFieldError('date')}
@@ -202,11 +225,14 @@ const UpdateForm = () => {
                         <TextField
                             required
                             fullWidth
+                            sx={fieldTime}
+                            inputProps={{style: {paddingLeft: "3rem"}}}
                             id="time"
-                            type="time"
                             name="time"
+                            type="text"
                             value={state.time}
                             label="Время проведения"
+                            placeholder="ЧЧ:ММ"
                             onChange={inputChange}
                             error={Boolean(getFieldError('time'))}
                             helperText={getFieldError('time')}
@@ -217,12 +243,14 @@ const UpdateForm = () => {
                         <TextField
                             fullWidth
                             multiline
+                            sx={fieldDescription}
                             rows={4}
                             id="description"
                             type="description"
                             name="description"
                             value={state.description}
                             label="Описание мероприятия"
+                            inputProps={{style: {paddingLeft: "2rem"}}}
                             onChange={inputChange}
                             error={Boolean(getFieldError('description') || descriptionValid === false)}
                             helperText={getFieldError('description') ? getFieldError('description') : validateDescription}
@@ -234,8 +262,8 @@ const UpdateForm = () => {
                             fullWidth
                             variant="contained"
                             sx={{mt: 3, mb: 2}}
-                            disabled={loading}>
-                            Обновить мероприятие
+                            disabled={update}>
+                            {update ? (<CircularProgress />) : 'Обновить мероприятие'}
                         </Button>
                     </Box>
                 </Box>

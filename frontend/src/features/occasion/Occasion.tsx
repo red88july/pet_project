@@ -5,7 +5,7 @@ import {Alert, Box, CircularProgress} from '@mui/material';
 
 import {isErrorToLoadOccasion, isLoadingOccasion, selectOccasion} from "./occasionSlice.ts";
 import {getOccasion} from "./occasionThunk.ts";
-import OccasionList from "./containers/OccasionList.tsx";
+import OccasionList from "./components/OccasionList.tsx";
 
 const Occasion: React.FC = () => {
     const dispatch = useAppDispatch();

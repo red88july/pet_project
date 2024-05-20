@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {Box, Button, CardMedia, Menu, MenuItem} from '@mui/material';
 
-import noAvatar from '../../../assets/images/ic-noavatar.png';
+import noAvatar from '../../../assets/images/icons/ic-noavatar.png';
 import {apiURL} from '../../../utils/constants.url.ts';
 import {logout} from "../../../features/users/usersThunk.ts";
 import {useAppDispatch} from "../../../app/hooks.ts";

@@ -6,7 +6,8 @@ import UserMenu from "./UserMenu.tsx";
 import GuestMenu from "./GuestMenu.tsx";
 import {selectUser} from "../../../features/users/usersSlice.ts";
 
-import logo from '../../../assets/images/ic-plannerLogo.png';
+import logo from '../../../assets/images/icons/ic-plannerLogo.png';
+import {imgStyleAppToolbar, styleLinkBoxAppToolbar} from "../../../style.ts";
 
 const Link = styled(NavLink)({
     color: 'inherit',
@@ -15,22 +16,6 @@ const Link = styled(NavLink)({
         color: 'inherit',
     },
 });
-
-const imgStyle = {
-    width: '100px',
-    height: '100px',
-    '&:hover': {
-        transition: '1s',
-        transform: 'scale(0.8)'
-    },
-}
-
-const styleLinkBox = {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'end',
-    width: '350px',
-}
 
 const AppToolbar = () => {
     const user = useAppSelector(selectUser);
@@ -47,11 +32,11 @@ const AppToolbar = () => {
                         <Grid container justifyContent="space-between" alignItems="center">
                             <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                                 <Link to={routes.home}>
-                                    <Box sx={styleLinkBox}>
+                                    <Box sx={styleLinkBoxAppToolbar}>
                                         <CardMedia
                                             component="img"
                                             src={logo}
-                                            sx={imgStyle}/>
+                                            sx={imgStyleAppToolbar}/>
                                         <Box>
                                             <Typography variant='h4' sx={{lineHeight: '1.0', fontSize: '2.3rem'}}>
                                                 🅶🆄🆁🆄

@@ -11,14 +11,24 @@ import {
 
 import {useSelector} from 'react-redux';
 import {useAppDispatch, useAppSelector} from '../../../app/hooks.ts';
-import {useNavigate} from 'react-router-dom';
-import FileInput from '../../../components/FileInput/FileInput';
+import {Link as RouterLink, useNavigate} from 'react-router-dom';
+import FileInput from '../../../components/FileInput/FileInput.tsx';
 import {selectUser} from "../../users/usersSlice.ts";
 import {OccasionMutation} from "../../../types/occasion.types";
 import {occasionCreate} from "../occasionThunk.ts";
 import {isErrorLoadingOccasions, isLoadingOccasion} from "../occasionSlice.ts";
-import picturePlanner from '../../../../src/assets/images/ic-planner.png';
+import picturePlanner from '../../../assets/images/icons/ic-planner.png';
 import {checkForBadWords} from "../../../utils/BadWordCheck.ts";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import {routes} from "../../../constants/constantsPage.routes.ts";
+import {
+    fieldAddress,
+    fieldCategory,
+    fieldCity,
+    fieldDate, fieldDescription,
+    fieldHall,
+    fieldTime
+} from "../../../style.ts";
 
 const OccasionForm = () => {
     const user = useSelector(selectUser);
@@ -134,6 +144,11 @@ const OccasionForm = () => {
         <>
             <Container maxWidth="md">
                 <CssBaseline/>
+                <Button startIcon={<ArrowBackIcon/>} component={RouterLink} to={routes.home}>
+                    <Typography style={{textAlign: 'center'}} variant="body2">
+                        Вернутся назад
+                    </Typography>
+                </Button>
                 <Box
                     sx={{
                         display: 'flex',
@@ -159,6 +174,11 @@ const OccasionForm = () => {
                             name="title"
                             value={occasion.title}
                             label="Название мероприятия"
+                            InputLabelProps={{shrink: true}}
+                            inputProps={{
+                                style: {
+                                    paddingLeft: "3rem"
+                                }}}
                             onChange={inputChange}
                             error={Boolean(getFieldError('title') || titleValid === false)}
                             helperText={getFieldError('title') ? getFieldError('title') : validateTitle}
@@ -170,11 +190,14 @@ const OccasionForm = () => {
                             <Grid item xs={6}>
                                 <TextField
                                     fullWidth
+                                    sx={fieldHall}
                                     id="location"
                                     type="location"
                                     name="location"
                                     value={occasion.location}
                                     label="Место проведения"
+                                    InputLabelProps={{shrink: true}}
+                                    inputProps={{style: {paddingLeft: "3rem"}}}
                                     onChange={inputChange}
                                     error={Boolean(getFieldError('location') || locationValid === false)}
                                     helperText={getFieldError('location') ? getFieldError('location') : validateLocation}
@@ -184,11 +207,14 @@ const OccasionForm = () => {
                             <Grid item xs={3}>
                                 <TextField
                                     required
+                                    sx={fieldCity}
                                     id="city"
                                     type="city"
                                     name="city"
                                     value={occasion.city}
                                     label="Город"
+                                    InputLabelProps={{shrink: true}}
+                                    inputProps={{style: {paddingLeft: "3rem"}}}
                                     onChange={inputChange}
                                     error={Boolean(getFieldError('city') || cityValid === false)}
                                     helperText={getFieldError('city') ? getFieldError('city') : validateCity}
@@ -200,11 +226,14 @@ const OccasionForm = () => {
                             <Grid item xs={3}>
                                 <TextField
                                     required
+                                    sx={fieldAddress}
                                     id="address"
                                     type="address"
                                     name="address"
                                     value={occasion.address}
                                     label="Адрес"
+                                    InputLabelProps={{shrink: true}}
+                                    inputProps={{style: {paddingLeft: "3rem"}}}
                                     onChange={inputChange}
                                     error={Boolean(getFieldError('address') || addressValid === false)}
                                     helperText={getFieldError('address') ? getFieldError('address') : validateAddress}
@@ -216,42 +245,48 @@ const OccasionForm = () => {
                         <TextField
                             required
                             fullWidth
+                            sx={fieldDate}
                             id="date"
-                            type="date"
+                            type="text"
                             name="date"
                             value={occasion.date}
                             label="Дата проведения"
+                            InputLabelProps={{shrink: true}}
+                            inputProps={{style: {paddingLeft: "3rem"}}}
+                            placeholder="ДД.ММ.ГГ"
                             onChange={inputChange}
                             error={Boolean(getFieldError('date'))}
                             helperText={getFieldError('date')}
                             margin="normal"
                             autoComplete="new-date"
-                            InputLabelProps={{shrink: true}}
                         />
                         <TextField
                             required
                             fullWidth
-                            id="time"
-                            type="time"
-                            name="time"
+                            sx={fieldTime}
                             value={occasion.time}
                             label="Время проведения"
+                            InputLabelProps={{shrink: true}}
+                            inputProps={{style: {paddingLeft: "3rem"}}}
+                            placeholder="ЧЧ:ММ"
                             onChange={inputChange}
                             error={Boolean(getFieldError('time'))}
                             helperText={getFieldError('time')}
                             margin="normal"
                             autoComplete="new-time"
-                            InputLabelProps={{shrink: true}}
                         />
                         <TextField
                             fullWidth
                             multiline
                             rows={4}
+                            sx={fieldDescription}
                             id="description"
                             type="description"
                             name="description"
                             value={occasion.description}
                             label="Описание мероприятия"
+                            InputLabelProps={{shrink: true}}
+                            inputProps={{style: {paddingLeft: "3rem"}}}
                             onChange={inputChange}
                             error={Boolean(getFieldError('description') || descriptionValid === false)}
                             helperText={getFieldError('description') ? getFieldError('description') : validateDescription}
@@ -268,6 +303,8 @@ const OccasionForm = () => {
                                     name="duration"
                                     value={occasion.duration}
                                     label="Продолжительность"
+                                    InputLabelProps={{shrink: true}}
+                                    inputProps={{style: {paddingLeft: "3rem"}}}
                                     onChange={inputChange}
                                     error={Boolean(getFieldError('duration'))}
                                     helperText={getFieldError('duration')}
@@ -283,6 +320,8 @@ const OccasionForm = () => {
                                     name="restrictions"
                                     value={occasion.restrictions}
                                     label="Возрастное ограничение"
+                                    InputLabelProps={{shrink: true}}
+                                    inputProps={{style: {paddingLeft: "3rem"}}}
                                     onChange={inputChange}
                                     error={Boolean(getFieldError('restrictions'))}
                                     helperText={getFieldError('restrictions')}
@@ -299,6 +338,8 @@ const OccasionForm = () => {
                                     name="price"
                                     value={occasion.price}
                                     label="Цена"
+                                    InputLabelProps={{shrink: true}}
+                                    inputProps={{style: {paddingLeft: "3rem"}}}
                                     onChange={inputChange}
                                     error={Boolean(getFieldError('price') || isValidPrice === false)}
                                     helperText={getFieldError('price') ? getFieldError('price') : priceLabel}
@@ -310,11 +351,14 @@ const OccasionForm = () => {
                         <TextField
                             required
                             fullWidth
+                            sx={fieldCategory}
                             id="category"
                             type="category"
                             name="category"
                             value={occasion.category}
                             label="Какая категория"
+                            InputLabelProps={{shrink: true}}
+                            inputProps={{style: {paddingLeft: "3rem"}}}
                             onChange={inputChange}
                             error={Boolean(getFieldError('category') || categoryValid === false)}
                             helperText={getFieldError('category') ? getFieldError('category') : validateCategory}

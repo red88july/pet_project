@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store.ts';
-import {deleteOccasion, getOccasion, occasionCreate} from "./occasionThunk.ts";
+import {deleteOccasion, getOccasion, occasionCreate, updateOccasion} from "./occasionThunk.ts";
 import {Occasion} from "../../types/occasion.types";
 import {ValidationError} from "../../types/user.types";
 
@@ -12,7 +12,7 @@ interface OccasionState {
     isLoadOccasion: boolean;
     isErrorLoadOccasion: boolean;
     isDelete: boolean;
-    isEditing: boolean;
+    isUpdate: boolean;
 }
 
 const initialState: OccasionState = {
@@ -23,7 +23,7 @@ const initialState: OccasionState = {
     isLoadOccasion: false,
     isErrorLoadOccasion: false,
     isDelete: false,
-    isEditing: false,
+    isUpdate: false,
 };
 
 export const occasionSlice = createSlice({
@@ -35,12 +35,10 @@ export const occasionSlice = createSlice({
         builder.addCase(occasionCreate.pending, (state) => {
             state.isLoadingOccasion = true;
             state.isErrorLoadingOccasion = null;
-        });
-        builder.addCase(occasionCreate.fulfilled, (state, {payload: data}) => {
+        }).addCase(occasionCreate.fulfilled, (state, {payload: data}) => {
             state.isLoadingOccasion = false;
             state.occasions = data;
-        });
-        builder.addCase(occasionCreate.rejected, (state, {payload: error}) => {
+        }).addCase(occasionCreate.rejected, (state, {payload: error}) => {
             state.isLoadingOccasion = false;
             state.isErrorLoadingOccasion = error || null;
         });
@@ -48,25 +46,29 @@ export const occasionSlice = createSlice({
         builder.addCase(getOccasion.pending, (state) => {
             state.isLoadOccasion = true;
             state.isErrorLoadOccasion = false;
-        });
-        builder.addCase(getOccasion.fulfilled, (state, {payload: occasion}) => {
+        }).addCase(getOccasion.fulfilled, (state, {payload: occasion}) => {
             state.isLoadOccasion = false;
             state.occasion = occasion;
-        });
-        builder.addCase(getOccasion.rejected, (state) => {
+        }).addCase(getOccasion.rejected, (state) => {
             state.isLoadOccasion = false;
             state.isErrorLoadOccasion = true;
         });
 
         builder.addCase(deleteOccasion.pending, (state) => {
             state.isDelete = true;
-        })
-        builder.addCase(deleteOccasion.fulfilled, (state) => {
+        }).addCase(deleteOccasion.fulfilled, (state) => {
             state.isDelete = false;
-        })
-        builder.addCase(deleteOccasion.rejected, (state) => {
+        }).addCase(deleteOccasion.rejected, (state) => {
             state.isDelete = false;
         });
+
+        builder.addCase(updateOccasion.pending, (state) => {
+            state.isUpdate = true;
+        }).addCase(updateOccasion.fulfilled, (state) => {
+            state.isUpdate = false;
+        }).addCase(updateOccasion.rejected, (state) => {
+            state.isUpdate = false;
+        })
     }
 });
 
@@ -76,3 +78,4 @@ export const isLoadingOccasion = (state: RootState) => state.occasion.isLoadOcca
 export const isErrorToLoadOccasion = (state: RootState) => state.occasion.isErrorLoadOccasion;
 export const isDeleteOccasion = (state: RootState) => state.occasion.isDelete;
 export const isErrorLoadingOccasions = (state: RootState) => state.occasion.isErrorLoadingOccasion;
+export const isUpdateOccasion = (state: RootState) => state.occasion.isUpdate;
