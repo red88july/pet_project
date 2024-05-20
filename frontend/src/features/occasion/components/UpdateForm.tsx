@@ -1,21 +1,16 @@
 import React, {useState} from 'react';
-import {
-    Box,
-    Button, CardMedia,
-    Container,
-    CssBaseline,
-    Grid,
-    TextField,
-    Typography,
-} from '@mui/material';
+import { Box, Button, CardMedia, Container, CssBaseline, Grid, TextField, Typography} from '@mui/material';
 
-import { useAppDispatch,  useAppSelector} from '../../../app/hooks.ts';
-import {useNavigate, useParams} from 'react-router-dom';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks.ts';
+import {Link as RouterLink, useNavigate, useParams} from 'react-router-dom';
 import {isErrorLoadingOccasions, isLoadingOccasion, selectOccasion} from "../occasionSlice.ts";
-import picturePlanner from '../../../../src/assets/images/ic-planner.png';
 import {checkForBadWords} from "../../../utils/BadWordCheck.ts";
 import {updateOccasion} from "../occasionThunk.ts";
 import {UpdateStateOccasion} from "../../../types/occasion.types";
+import {routes} from "../../../constants/constantsPage.routes.ts";
+
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import picturePlanner from '../../../../src/assets/images/ic-planner.png';
 
 const UpdateForm = () => {
     const dispatch = useAppDispatch();
@@ -105,6 +100,11 @@ const UpdateForm = () => {
         <>
             <Container maxWidth="md">
                 <CssBaseline/>
+                    <Button startIcon={<ArrowBackIcon/>} component={RouterLink} to={routes.home} >
+                        <Typography style={{textAlign: 'center'}} variant="body2">
+                            Вернутся назад
+                        </Typography>
+                    </Button>
                 <Box
                     sx={{
                         display: 'flex',
