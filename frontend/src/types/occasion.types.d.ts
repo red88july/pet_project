@@ -1,5 +1,4 @@
 import {UserMutation} from "./user.types";
-import {CategoryMutation} from "./category.types";
 
 export interface Occasion {
     _id: string;
@@ -14,7 +13,7 @@ export interface Occasion {
     description: string;
     restrictions: number;
     duration: string;
-    category: CategoryMutation;
+    category: string;
     image: null | string;
 }
 
@@ -34,12 +33,27 @@ export interface OccasionMutation {
     image: File | null,
 }
 
+export interface UpdateOccasionData {
+    id?: string;
+    occasionMutation?: EditRequestOccasion;
+}
+
 export interface EditRequestOccasion {
-    id: string | undefined;
-    address: string | undefined;
-    city: string | undefined;
-    date: string | undefined;
-    time: string | undefined;
-    description: string | undefined;
-    // category: string | undefined;
+    address?: string;
+    city?: string;
+    date?: string
+    time?: string;
+    description?: string;
+    category?: string;
+    location?: string;
+}
+
+export interface UpdateStateOccasion {
+    address?: string;
+    city?: string;
+    date?: string
+    time?: string;
+    description?: string;
+    category?: string;
+    location?: string;
 }

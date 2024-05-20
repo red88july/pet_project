@@ -27,6 +27,7 @@ const Occasion: React.FC = () => {
                     <OccasionList
                         key={item._id}
                         id={item._id}
+                        user={item.user._id}
                         city={item.city}
                         address={item.address}
                         location={item.location}

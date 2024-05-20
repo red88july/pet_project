@@ -16,6 +16,7 @@ import {Link as RouterLink} from "react-router-dom";
 interface Props {
     id: string;
     city: string;
+    user: string;
     address: string;
     location: string
     title: string;
@@ -28,8 +29,8 @@ interface Props {
 }
 
 const OccasionList: React.FC<Props> = ({
-                                           id, city, address, title, location,
-                                           date, time, price, restrictions, duration, image
+                                           id, city, address, title, location, user,
+                                           date, time, price, restrictions, duration, image,
                                        }) => {
     const getUser = useAppSelector(selectUser);
     const isDelete = useAppSelector(isDeleteOccasion);
@@ -65,8 +66,8 @@ const OccasionList: React.FC<Props> = ({
             <Card id={id} sx={{maxWidth: 350}}>
                 <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                     <CardContent>
-                        <Box sx={{display: 'flex', justifyContent: 'end'}}>
-                            {(getUser && getUser?.role === 'admin' || getUser && getUser?.role === 'manager') && (
+                        <Box sx={{display: 'flex', justifyContent: 'end', alignItems: 'center'}}>
+                            {(getUser?._id === user) && (
                             <Box>
                                 <Link component={RouterLink} to={`occasion/update/${id}`} variant="body2">
                                     <SystemUpdateAltIcon />

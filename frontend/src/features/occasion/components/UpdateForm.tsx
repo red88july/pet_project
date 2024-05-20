@@ -11,43 +11,42 @@ import {
 
 import { useAppDispatch,  useAppSelector} from '../../../app/hooks.ts';
 import {useNavigate, useParams} from 'react-router-dom';
-
-// import { occasionCreate} from "../occasionThunk.ts";
 import {isErrorLoadingOccasions, isLoadingOccasion, selectOccasion} from "../occasionSlice.ts";
 import picturePlanner from '../../../../src/assets/images/ic-planner.png';
 import {checkForBadWords} from "../../../utils/BadWordCheck.ts";
 import {updateOccasion} from "../occasionThunk.ts";
-import {EditRequestOccasion} from "../../../types/occasion.types";
+import {UpdateStateOccasion} from "../../../types/occasion.types";
 
 const UpdateForm = () => {
-
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const error = useAppSelector(isErrorLoadingOccasions);
     const loading = useAppSelector(isLoadingOccasion);
-
     const {id} = useParams();
     const occasions = useAppSelector(selectOccasion);
 
     const occasion = occasions.find(occasion => occasion._id === id);
-    const [state, setState] = useState<EditRequestOccasion>({
-        id: occasion?._id,
+    const [state, setState] = useState<UpdateStateOccasion>({
         city: occasion?.city,
         address: occasion?.address,
         date: occasion?.date,
         time: occasion?.time,
         description: occasion?.description,
+        category: occasion?.category,
+        location: occasion?.location,
     });
 
     const [validateAddress, setValidateAddress] = useState<string>('');
     const [validateCity, setValidateCity] = useState<string>('');
     const [validateDescription, setValidateDescription] = useState<string>('');
-    // const [validateCategory, setValidateCategory] = useState<string>('');
+    const [validateCategory, setValidateCategory] = useState<string>('');
+    const [validateLocation, setValidateLocation] = useState<string>('');
 
     const [addressValid, setAddressValid] = useState<boolean | undefined>(undefined);
     const [cityValid, setCityValid] = useState<boolean | undefined>(undefined);
     const [descriptionValid, setDescriptionValid] = useState<boolean | undefined>(undefined);
-    // const [categoryValid, setCategoryValid] = useState<boolean | undefined>(undefined);
+    const [categoryValid, setCategoryValid] = useState<boolean | undefined>(undefined);
+    const [locationValid, setLocationValid] = useState<boolean | undefined>(undefined);
 
     const getFieldError = (fieldName: string) => {
         try {
@@ -74,10 +73,15 @@ const UpdateForm = () => {
             setDescriptionValid(!isBadWord);
             setValidateDescription(isBadWord ? 'В ваших данных присутствует не нормативная лексика!' : '');
         }
-        // if (name === 'category') {
-        //     setCategoryValid(!isBadWord);
-        //     setValidateCategory(isBadWord ? 'В ваших данных присутствует не нормативная лексика!' : '');
-        // }
+        if (name === 'category') {
+            setCategoryValid(!isBadWord);
+            setValidateCategory(isBadWord ? 'В ваших данных присутствует не нормативная лексика!' : '');
+        }
+
+        if (name === 'location') {
+            setLocationValid(!isBadWord);
+            setValidateLocation(isBadWord ? 'В ваших данных присутствует не нормативная лексика!' : '');
+        }
 
         setState(prevState => {
             return {
@@ -90,7 +94,7 @@ const UpdateForm = () => {
     const submitForm = async (event: React.FormEvent) => {
         event.preventDefault();
         try {
-            await dispatch(updateOccasion(state)).unwrap();
+            await dispatch(updateOccasion({id, occasionMutation: state})).unwrap();
             navigate('/');
         } catch (e) {
             //error
@@ -150,23 +154,36 @@ const UpdateForm = () => {
                                     autoComplete="new-lastName"
                                 />
                             </Grid>
-                            {/*<Grid item xs={4}>*/}
-                            {/*    <TextField*/}
-                            {/*        required*/}
-                            {/*        fullWidth*/}
-                            {/*        id="category"*/}
-                            {/*        type="category"*/}
-                            {/*        name="category"*/}
-                            {/*        value={state.category}*/}
-                            {/*        label="Какая категория"*/}
-                            {/*        onChange={inputChange}*/}
-                            {/*        error={Boolean(getFieldError('category') || categoryValid === false)}*/}
-                            {/*        helperText={getFieldError('category') ? getFieldError('category') : validateCategory}*/}
-                            {/*        margin="normal"*/}
-                            {/*        autoComplete="new-category"*/}
-                            {/*    />*/}
-                            {/*</Grid>*/}
+                            <Grid item xs={4}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="category"
+                                    type="category"
+                                    name="category"
+                                    value={state.category}
+                                    label="Какая категория"
+                                    onChange={inputChange}
+                                    error={Boolean(getFieldError('category') || categoryValid === false)}
+                                    helperText={getFieldError('category') ? getFieldError('category') : validateCategory}
+                                    margin="normal"
+                                    autoComplete="new-category"
+                                />
+                            </Grid>
                         </Grid>
+                        <TextField
+                            fullWidth
+                            id="location"
+                            type="location"
+                            name="location"
+                            value={state.location}
+                            label="Место проведения"
+                            onChange={inputChange}
+                            error={Boolean(getFieldError('location') || locationValid === false)}
+                            helperText={getFieldError('location') ? getFieldError('location') : validateLocation}
+                            margin="normal"
+                            autoComplete="new-location"
+                        />
                         <TextField
                             required
                             fullWidth

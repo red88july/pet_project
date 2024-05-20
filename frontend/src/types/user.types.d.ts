@@ -55,7 +55,7 @@ export interface GlobalError {
 }
 
 export interface UserMutation {
-    id: string;
+    _id: string;
     firstName: string;
     lastName: string;
     surName: string;

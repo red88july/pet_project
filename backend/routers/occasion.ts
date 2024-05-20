@@ -6,6 +6,7 @@ import {OccasionMutation, OccasionTypes} from "../types/occasion.types";
 
 import permit from "../middleware/permit";
 import auth, {RequestUser} from "../middleware/auth";
+import User from "../models/User";
 
 export const occasionRouter = Router();
 
@@ -65,18 +66,19 @@ occasionRouter.get('/:id', async (req, res, next) => {
     }
 });
 
-occasionRouter.patch('/update/:id', auth, permit('speaker', 'manager', 'admin'), async (req, res, next) => {
+occasionRouter.patch('/update/:id', auth, async (req:RequestUser, res, next) => {
     try {
         const occasionData: OccasionMutation = {
             city: req.body.city,
             address: req.body.address,
+            location: req.body.location,
             date: req.body.date,
             time: req.body.time,
             description: req.body.description,
             category: req.body.category,
         }
 
-        const findOccasionAndUpdate = await Occasion.findByIdAndUpdate({_id: req.params.id}, occasionData, {new: true});
+        const findOccasionAndUpdate = await Occasion.findByIdAndUpdate({ _id: req.params.id }, occasionData, {new: true});
         return res.send(findOccasionAndUpdate);
     } catch (e) {
         next(e);
