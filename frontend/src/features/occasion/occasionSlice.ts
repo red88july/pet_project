@@ -1,6 +1,9 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store.ts';
-import {deleteOccasion, getOccasion, occasionCreate, updateOccasion} from "./occasionThunk.ts";
+import {
+    deleteOccasion, getByOccasionByCategory,
+    getOccasion, occasionCreate, updateOccasion
+} from "./occasionThunk.ts";
 import {Occasion} from "../../types/occasion.types";
 import {ValidationError} from "../../types/user.types";
 
@@ -13,6 +16,9 @@ interface OccasionState {
     isErrorLoadOccasion: boolean;
     isDelete: boolean;
     isUpdate: boolean;
+
+    isLoadingGetOccasion: boolean,
+    isErrorGetOccasion: boolean,
 }
 
 const initialState: OccasionState = {
@@ -24,6 +30,9 @@ const initialState: OccasionState = {
     isErrorLoadOccasion: false,
     isDelete: false,
     isUpdate: false,
+
+    isLoadingGetOccasion: false,
+    isErrorGetOccasion: false,
 };
 
 export const occasionSlice = createSlice({
@@ -69,6 +78,19 @@ export const occasionSlice = createSlice({
         }).addCase(updateOccasion.rejected, (state) => {
             state.isUpdate = false;
         })
+
+        builder.addCase(getByOccasionByCategory.pending, (state) => {
+            state.isLoadingGetOccasion = true;
+            state.isErrorGetOccasion = false;
+        });
+        builder.addCase(getByOccasionByCategory.fulfilled, (state, {payload: occasion}) => {
+            state.isLoadingGetOccasion = false;
+            state.occasion = occasion;
+        });
+        builder.addCase(getByOccasionByCategory.rejected, (state) => {
+            state.isLoadingGetOccasion = false;
+            state.isErrorGetOccasion = true;
+        });
     }
 });
 

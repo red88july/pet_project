@@ -1,22 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {Box, Button, Card, CardContent, CardMedia, Dialog, Link, Typography} from "@mui/material";
+import React, {useState} from 'react';
 
-import {apiURL} from "../../../utils/constants.url.ts";
-import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
-import {selectUser} from "../../users/usersSlice.ts";
-import {isDeleteOccasion} from "../occasionSlice.ts";
-import {deleteOccasion, getOccasion} from "../occasionThunk.ts";
+import {Box, Button, Card, CardContent, CardMedia, Dialog, Typography} from '@mui/material';
 
 import imageNotAvailable from '../../../assets/images/image_not_available.png';
-import CancelIcon from '@mui/icons-material/Cancel';
-import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
-import {LoadingButton} from "@mui/lab";
-import {Link as RouterLink} from "react-router-dom";
+import {apiURL} from "../../../utils/constants.url.ts";
 
 interface Props {
     id: string;
     city: string;
-    user: string;
     address: string;
     location: string
     title: string;
@@ -28,61 +19,30 @@ interface Props {
     image: string | null;
 }
 
-const OccasionList: React.FC<Props> = ({
-                                           id, city, address, title, location, user,
+const OccasionCategoryItems: React.FC<Props> = ({
+                                           id, city, address, title, location,
                                            date, time, price, restrictions, duration, image,
                                        }) => {
-    const getUser = useAppSelector(selectUser);
-    const isDelete = useAppSelector(isDeleteOccasion);
-    const dispatch = useAppDispatch();
 
     const [open, setOpen] = useState(false);
-
-    useEffect(() => {
-        dispatch(getOccasion())
-    }, [dispatch]);
-
     let coverImage = imageNotAvailable;
 
     if (image) {
         coverImage = apiURL + '/' + image;
     }
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
-    const nandleDelete = async () => {
-        await dispatch(deleteOccasion(id))
-        await dispatch(getOccasion());
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
     };
 
     return (
         <>
-            <Card id={id} sx={{maxWidth: 350, marginTop: 4}}>
+            <Card id={id} sx={{maxWidth: 350}}>
                 <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                     <CardContent>
-                        <Box sx={{display: 'flex', justifyContent: 'end', alignItems: 'center'}}>
-                            {(getUser?._id === user) && (
-                                <Box>
-                                    <Link component={RouterLink} to={`occasion/update/${id}`} variant="body2">
-                                        <SystemUpdateAltIcon/>
-                                    </Link>
-                                </Box>
-                            )}
-                            <Box
-                                sx={{display: 'flex', justifyContent: 'flex-end', marginBottom: '5px', padding: '5px'}}>
-                                {(getUser && getUser?.role === 'admin' || getUser && getUser?.role === 'manager') && (
-                                    <LoadingButton
-                                        disabled={isDelete}
-                                        loading={isDelete}
-                                        onClick={nandleDelete}
-                                        sx={{minWidth: '29px', padding: '3px', borderRadius: '50%'}}
-                                        color="error">
-                                        <CancelIcon/>
-                                    </LoadingButton>
-                                )}
-                            </Box>
-                        </Box>
                         <CardMedia
                             onClick={handleOpen}
                             component="img"
@@ -137,4 +97,4 @@ const OccasionList: React.FC<Props> = ({
     );
 };
 
-export default OccasionList;
+export default OccasionCategoryItems;

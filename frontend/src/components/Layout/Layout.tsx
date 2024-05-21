@@ -5,15 +5,16 @@ import {Box, Container} from "@mui/material";
 import {useAppSelector} from "../../app/hooks.ts";
 import {selectUser} from "../../features/users/usersSlice.ts";
 import FormBar from "../FormBar/FormBar.tsx";
+import CategoryMenu from "../CategoryMenu/CategoryMenu.tsx";
 
 const Layout: React.FC<PropsWithChildren> = ({children}) => {
-
     const user = useAppSelector(selectUser);
 
     return (
         <>
             <header>
                 <AppToolbar/>
+                <CategoryMenu/>
             </header>
             <main>
                 <Container

@@ -11,9 +11,12 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.tsx";
 import {useAppSelector} from "./app/hooks.ts";
 import {selectUser} from "./features/users/usersSlice.ts";
 import UpdateForm from "./features/occasion/components/UpdateForm.tsx";
+import {serverRoutes} from "./constants/constantsServer.routes.ts";
+import OccasionCategory from "./features/occasion/OccasionCategory.tsx";
 
 function App() {
     const user = useAppSelector(selectUser);
+
     return (
         <>
             <Layout>
@@ -27,10 +30,13 @@ function App() {
                                 <OccasionForm/>
                             </ProtectedRoute>
                         }/>
-                        <Route path='occasion/update/:id' element={
+                        <Route path={serverRoutes.occasionUpdate} element={
                             <ProtectedRoute isAllowed={user && (user.role === 'speaker' || user.role === 'manager' || user.role === 'admin')}>
                                 <UpdateForm />
                             </ProtectedRoute>
+                        }/>
+                        <Route path='/occasion' element={
+                                <OccasionCategory />
                         }/>
                         <Route path="*" element={(
                             <Box

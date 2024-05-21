@@ -77,3 +77,13 @@ export const styleLinkBoxAppToolbar = {
     alignItems: 'end',
     width: '350px',
 }
+
+export const styleCategoryMenuLink = {
+    '&:hover': {
+        borderInline: '4px solid #ef5350',
+        writingModer: 'horizontal-tb',
+        direction: 'rtl',
+        borderBottomRightRadius: '0',
+        borderBottomLeftRadius: '0'
+    },
+}

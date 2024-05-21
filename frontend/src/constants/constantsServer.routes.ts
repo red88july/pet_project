@@ -3,6 +3,6 @@ export const serverRoutes = {
     login: '/users/sessions',
     logout: '/users/sessions',
     occasion: '/occasion',
-    occasionUpdate: '/occasion/update',
+    occasionUpdate: 'occasion/update/:id',
     occasionDelete: '/occasion/delete',
 }

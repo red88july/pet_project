@@ -3,5 +3,4 @@ export const routes = {
     register: '/register',
     login: '/login',
     occasionForm: '/occasionForm',
-    updateForm: '/updateForm',
 }

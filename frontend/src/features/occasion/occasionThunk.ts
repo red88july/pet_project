@@ -54,6 +54,18 @@ export const getOccasion = createAsyncThunk<Occasion []>(
     }
 );
 
+export const getByOccasionByCategory = createAsyncThunk<Occasion[], string >(
+    'occasion/getByOccasionByCategory',
+    async (category) => {
+        try {
+            const response = await axiosApi.get('/occasion?category=' + category);
+            return response.data;
+        } catch (e) {
+           console.log(e)
+        }
+    }
+);
+
 export const deleteOccasion = createAsyncThunk<void, string>(
     'occasion/deleteOccasion',
     async (id) => {

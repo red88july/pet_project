@@ -44,8 +44,7 @@ occasionRouter.get('/',async (req, res, next) => {
     try {
         let queryOccasionData = req.query as object;
         const getOccasion = await Occasion.find(queryOccasionData)
-            .populate({path: 'user', select: 'firstName lastName surName role email phoneNumber'})
-            .populate({path: 'category', select: 'name'});
+            .populate({path: 'user', select: 'firstName lastName surName role email phoneNumber'});
         return res.send(getOccasion);
     } catch (e) {
         next(e);
